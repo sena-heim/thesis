@@ -1,0 +1,151 @@
+\begin{chapter}{提案手法}\label{chap:teian}
+本研究では\ref{sec:mokuteki}節で述べたように, DHRNetのdeformable convolution部分に受容野の広がりを制限する機構を追加することで, 受容野を適切な範囲に収めることを目指す. そのために, DHRNetの構造を詳しく説明した後に, offsetの範囲に制限を設ける新たな活性化関数を提案する. 
+
+\section{DHRNet (Deformable convolution High-Resolution Network)}\label{sub:dhrnet}
+DHRNet はネットワーク全体を通して高解像度を維持するアーキテクチャである. 図\ref{fig:hrnet_zentai}に示すようにHRNetは異なる解像度で処理をするネットワークを組み合わせた4つのステージで構成されている. ステージ1は入力と同等の解像度で処理するネットワークのみで構成される. 続くステージ2ではステージ1のネットワークに, 入力の1/2倍スケールの低解像度を処理するネットワークを追加する. さらに続くステージ3では1/4倍スケール低解像度を処理するネットワークを追加し, 最後のステージ4では1/8倍スケール低解像度を処理するネットワークを追加する. また, ステージ4にはdeformable convolution が適応されている. そして解像度を下げるたびにチャンネル数は2倍になる(16, 32, 64, 128チャンネル). 以降, 図\ref{fig:hrnet_zentai}に示した本アーキテクチャの詳細について説明していく. また, 図中のReLU, Batch Normalizationについては, それぞれ, 付録\ref{hu:ac_fn}, 付録\ref{hu:bn}で説明する. 
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.7]{./images/DHRNet.eps}
+  \caption{DHRNetの構造}
+  \label{fig:hrnet_zentai}
+\end{figure}
+\newpage
+\subsection{Basic Block}\label{subsec:BB}
+図\ref{fig:hrnet_zentai}のピンク色で示した``Basic Block''の構造を示したものが図\ref{fig:basicblock}である. このブロックはHRNetにおいて特徴抽出を担う重要な箇所である. 一般にこのような構成で層を深くすると, いわゆる``勾配消失''により, ネットワークの重みが更新できなくなる. これを解決する方法はさまざま提案されているが, HRNetでは``ResNet(Residual Network)''\cite{resnet}で提案された``残差ブロック''を用いている. 図\ref{fig:res}に示すように, 一般的なCNNは入力$x$を数段のConvolution層に通して$H(x)$を得るのに対し, 残差ブロックでは, CNNの出力$F(x)$と入力$s$との和を出力$H(x)=F(x)+x$とする. これにより, CNNでは$F(x)=H(x)-x$なる$H(x)$と入力$s$との残差を学習すればよく, 残差信号の平均値は0に近いので勾配消失を防ぐ効果が期待できる.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{./images/BasicBlock.eps}
+  \caption{Basic Block}
+  \label{fig:basicblock}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.30]{./images/resnet.eps}
+  \caption{一般的なCNN(右), 残差ブロック(左)}
+  \label{fig:res}
+\end{figure}
+
+\subsection{Bottleneck}\label{subsec:bottleneck}
+図\ref{fig:hrnet_zentai}の青色で示した``Bottleneck''はBasic Blockと同様, HRNetにおいて特徴抽出を担う箇所で, 図\ref{fig:bot}(右)に示すような構造である. 構造は残差ブロック(図\ref{fig:bot}(左))に似ているが, Bottleneckでは入力のチャンネル数を$1\times1$畳み込み(付録\ref{hu:1x1})を用いて小さくしてから$3\times3$畳み込みで特徴抽出し, 最後の$1\times1$畳み込みでチャンネル数を復元する. これにより計算コストを削減できる. 例えば, 図\ref{fig:bot}において残差ブロックの入力チャンネル64, Bottleneckが入力チャンネル数256とBottleneckの方がチャンネル数が大きいが, これらの計算コストは同等である.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.30]{./images/bottleneck.eps}
+  \caption{残差ブロック(右), Bottleneck(左)}
+  \label{fig:bot}
+\end{figure}
+
+\subsection{Exchange Unit}
+HRNetでは異なる解像度の特徴マップ間で情報共有するために``Exchange Unit''がある. 図\ref{fig:hrnet_zentai}ではオレンジ色の部分がそれにあたる. 具体的に, Exchage Unitでは異なる解像度の特徴マップ間でバイリニア補間によるアップサンプリング, またはストライド2の$3\times3$畳み込みによるダウンサンプリングで特徴マップのサイズを合わせ, 特徴マップ同士を加算する. これにより異なる解像度の特徴マップ間での情報共有を可能にしている. 
+
+\subsection{Up sampling}
+図\ref{fig:hrnet_zentai}の紫色で示したUp samplingは1/2, 1/4, 1/8の低解像度の特徴マップをバイリニア補間でアップサンプリングし, それらをチャンネル方向を軸にして1/1解像度の特徴マップに連結する. このUp samplingブロックで得られた特徴マップを分類に用いる.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.35]{./images/exchange.eps}
+  \caption{exchange unit\cite{hrnet}}
+  \label{fig:exchange}
+\end{figure}
+
+\subsection{Deformable Basic Block}\label{subsec:DBB}
+図\ref{fig:hrnet_zentai}の赤色で示した``Deformable Basic Block''の構造を示したものが図\ref{fig:deformablebasicblock}である. 
+``Deformable Basic Block''は, Basic Block の入力から数えて1番目と3番目の$3\times3$Convolutionをdeformable convolution に変更した
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{./images/DeformBlock_deform-conv2.eps}
+  \caption{Defromable Basic Block}
+  \label{fig:deformablebasicblock}
+\end{figure}
+
+
+\section{Deformable Convolution}
+deformable convolution畳み込みのサンプリング位置からの変位である``offset''を計算, 学習をしてフィルタのサンプリング位置を動的に変化させる. そのため画像中の物体のスケール, 形状に合わせて受容野のサイズ, 形状を変えることが可能である.\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.50]{./images/Defconv_offset.eps}
+  \caption{Deformable Convolution}
+  \label{fig:defconv_offset}
+\end{figure}
+畳み込みのサンプリング位置$p_n$の集合を$\mathcal{R}$, $w$を重み, $x$を入力特徴マップ, $y$を出力特徴マップと表したとき, 出力特徴量マップ$y$の各位置$p_0$に対応するConvolutionは式(\ref{eq:conv})のように書ける.
+\begin{eqnarray}
+  R = \{(-1,-1), (-1,0),\cdots,(0,1), (1,1)\} \nonumber \\
+  y(p_0) = \sum_{p_n\in R}^{} w(p_n)x(p_0 + p_n) \label{eq:conv} 
+\end{eqnarray}
+deformable convolutionでは, 式(\ref{eq:def})に示すようにconvolutionのサンプリング位置$p_0 + p_n$にoffset $\Delta p$を加算することで受容野を可変にしている.
+\begin{equation}
+y(p_0) = \sum_{p_n\in R}^{} w(p_n)x(p_0 + p_n + \Delta p_n) \label{eq:def}
+\end{equation}
+
+
+\subsection{offset}
+offsetの算出方法を図\ref{fig:defconv_offset2}に示す. 
+offsetの算出では, まず入力特徴マップを図\ref{fig:defconv_offset2}中の緑の枠線で示す追加のconvolutionに通すことで, 緑の立方体で示す入力特徴量の全てのサンプリング点のoffsetであるoffset fieldを出力する. offsetは$x$方向, $y$方向の移動量を示す2次元ベクトルであるため, offset fieldのチャンネル数は$2N$チャンネルである($N$はフィルタカーネルのサイズで, $3\times3$フィルタカーネルの場合$N=9$). 次にoffset field から 各サンプリング点のoffsetを取り出すことで,  図\ref{fig:defconv_offset2}中の緑の格子て示すoffsetを決定する. そして, 図\ref{fig:defconv_offset2}中の青い点線で示すように, offsetでconvolutionの受容野を変形する. しかし, offsetは整数であるとは限らないため, offsetによって変化した後のサンプリング位置が非整数座標になってしまう場合がある. その場合, 非整数座標に画素値は存在しないため, バイリニア補間で非整数座標の画素値を算出する必要がある(式(\ref{eq:bilini})).($G$はバイリニア補間, $q$は$p_0 + p_n + \Delta p_n$の周辺の整数座標) 
+\begin{equation}
+x(p_0 + p_n + \Delta p_n) = \sum_{q}^{} G(q, p_0 + p_n + \Delta p_n)x(q) \label{eq:bilini}
+\end{equation}
+offset $\Delta p_n$を学習するために, 式(\ref{eq:def}), (\ref{eq:bilini})のバイリニア補間をもとに勾配を求めると式(\ref{eq:bilini_back})のように求まる. これを用いて, 誤差逆伝播法(付録\ref{hu:backprop})により学習を行う.
+\begin{eqnarray}
+  \frac{\partial y(p_0)}{\partial \Delta p_n} &=& \sum_{p_n\in R}^{} w(p_n)\frac{\partial x(p_0 + p_n + \Delta p_n)}{\partial \Delta p_n} \nonumber \\
+  &=& \sum_{p_n\in R}^{} [w(p_n) \sum_{q}^{} \frac{\partial G(q, p_0 + p_n + \Delta p_n)}{\partial \Delta p_n}x(q)]
+  \label{eq:bilini_back}
+\end{eqnarray}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{./images/defconv_offset2.eps}
+  \caption{Deformable Convolutionの流れ\cite{defconv}}
+  \label{fig:defconv_offset2}
+\end{figure}
+
+\section{提案手法}\label{sec:teian}
+deformable convolutionのoffsetによって決定する受容野が収まるべき範囲は, 畳み込み層を重ねたときの, ある入力画像の画素が影響を及ぼす範囲によって決定できると考えた. 例えばストライド1の$3\times3$畳み込みの場合は, 1つの画素が最大で$3\times3$の範囲の出力特徴量に影響を及ぼす. 図\ref{fig:conv_ptn}に, ストライド1, padding1の$3\times3$畳み込みにより入力特徴量の影響を及ぼす範囲が広がる例を示す. 図\ref{fig:conv_ptn}中にある入力データの灰色はpaddingであり, 白はpadding前の元の入力データである. そして, 入力データ内の赤色で示す特徴量を入力として, $3\times3$畳み込みにより得られた出力特徴量が出力特徴量マップの薄い赤色部分である. さらに, downsamplingの際にも各特徴量が影響を及ぼす範囲は広がる. この入力特徴量が影響を及ぼす範囲内に受容野が収まれば, offsetにより変化したサンプリング点に変化前のサンプリング点の特徴が必ず含まれるようになる. \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{./images/conv_ptn.eps}
+  \caption{Deformable Convolutionの流れ\cite{defconv}}
+  \label{fig:conv_ptn}
+\end{figure}
+しかし, 現状のdeformable convolutionのoffsetは図\ref{fig:conv_ptn}中の緑色の枠に示すconvolutionの出力であり, 値の範囲を制限をせずに受容野の変更に用いている. そのため, deformable convolutionは入力特徴量が影響を及ぼす範囲外まで受容野を拡大することが可能な構造をしている.  そこで, 受容野の範囲を特徴量の影響を及ぼす範囲に制限するために, DHRNetの低解像度部分における入力画像のある1点が影響を及ぼす範囲を調査した. DHRNetのBase
+そして, DHRNetの低解像度部分では, ある入力画素が影響を及ぼす範囲が低解像度部分の特徴マップにおいて上下左右に6画素であった. そこで本研究では,算出されたoffsetの範囲を制限するhard tanh6をoffsetに適応することを提案する. 提案するhard tanh6は, hard tanh\cite{raghu2017expressive}を拡張した活性化関数である.  hard tanh関数は図\ref{fig:hardtanh}に示すように, 入力値が-1より小さい場合と1より大きい場合は出力値が常に0であり, -1以上, 1以内の範囲では入力値をそのまま出力する活性化関数であるがdeformable convolution で制限したい値域とは異なる. 
+
+% 入力特徴量が影響を及ぼす範囲外まで受容野が拡大すると, 入力特徴量とは関係のない位置の特徴量をdeformable convolutionの特徴抽出に用いることになるため, 学習が進まないと考えた.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{./images/hardtanh.eps}
+  \caption{hard tanh関数}
+  \label{fig:hardtanh}
+\end{figure}
+
+そのため, 提案するhard tanh6は図\ref{fig:hardtanh6}に示すように, hard tanhの値域を-6以上, 6以下に拡張した. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{./images/hardtanh6.eps}
+  \caption{hard tanh6関数}
+  \label{fig:hardtanh6}
+\end{figure}
+ここで, harh tanh6の入力を$x$としたときの式を式(\ref{eq:hard_tanh6})に示す. 入力$x$が$x<-6, x>6$ならば出力値$hardtanh6(x) =0$であり, $-6<=x<=6$の範囲内ならば$hardtanh6(x)=x$である. 
+\begin{equation}
+  hardtanh6(x) = 
+      \begin{cases}
+        6  (x>6)\\ 
+        x  (-6<=x<=6)\\
+        -6  (x<-6) \label{eq:hard_tanh6}
+      \end{cases}
+\end{equation}
+この提案する活性化関数に offset を通すことで, offset を中心のサンプリング点が影響を及ぼす範囲内で学習させる. \\
+さらに, 現状のアーキテクチャでは畳み込みの中心のサンプリング位置も動いてしまっており, 入力特徴量の中でサンプリングされない特徴が出てきてしまう可能性がある.
+それに加え, 畳み込みの位置普遍性が失われてしまう問題もあるため, 入力特徴量において特徴抽出に用いられない点があることは問題であると考えた.
+そこで, 全ての入力特徴量を特徴抽出に使用するために, deformable convolutionの中心のoffsetを0に固定することを提案する.図\ref{fig:defconv_c0_offset}は, padding1の$5\times5$サイズの入力特徴量と, $3\times3$畳み込みカーネルの中心位置のみを示した図である. 図\ref{fig:defconv_c0_offset}の上段にはある緑色は$3\times3$畳み込みカーネルの中心位置を表しており, 青い矢印で畳み込みカーネルがスライドする位置を示す. そして, 図\ref{fig:defconv_c0_offset}の下段の緑部分は, $3\times3$畳み込みカーネルの中心のサンプリング点でたたみ込まれた入力特徴量の位置を示す. 下段を見ると全ての入力特徴量が特徴抽出に用いられていることがわかる.
+よって, deformable convolutionの受容野の範囲に制限を設けることと, offsetの中心を0に固定することにより, 学習が促進されると考えた.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1.5]{./images/samplingten_c0.eps}
+  \caption{$3\times3$畳み込みカーネルの中心点による畳み込みの範囲}
+  \label{fig:defconv_c0_offset}
+\end{figure}
+
+\end{chapter}

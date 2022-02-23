@@ -1,0 +1,136 @@
+\begin{thebibliography}{10}
+
+\bibitem{rcnn}
+Ross Girshick, Jeff Donahue, Trevor Darrell, and Jitendra Malik.
+\newblock Rich feature hierarchies for accurate object detection and semantic
+  segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 580--587, 2014.
+
+\bibitem{yolo}
+Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi.
+\newblock You only look once: Unified, real-time object detection.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 779--788, 2016.
+
+\bibitem{semaseg}
+Roberto~Cipolla Jamie~Shotton, Matthew~Johnson.
+\newblock Semantic texton forests for image categorization and segmentation.
+\newblock In {\em Proc. Computer Vision and Pattern Recognition (CVPR 2008)},
+  pp. 1--8, 2008.
+
+\bibitem{semaseg2}
+Jamie Shotton, John Winn, Carsten Rother, and Antonio Criminisi.
+\newblock Textonboost for image understanding: Multi-class object recognition
+  and segmentation by jointly modeling texture, layout, and context.
+\newblock {\em International Journal of Computer Vision}, pp. 2--23, 2009.
+
+\bibitem{cnn}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In F.~Pereira, C.~J.~C. Burges, L.~Bottou, and K.~Q. Weinberger,
+  editors, {\em Advances in Neural Information Processing Systems}, Vol.~25,
+  pp. 1097--1105. Curran Associates, Inc., 2012.
+
+\bibitem{defconv}
+Jifeng Dai, Haozhi Qi, Yuwen Xiong, Yi~Li, Guodong Zhang, Han Hu, and Yichen
+  Wei.
+\newblock Deformable convolutional networks.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision (ICCV)}, Oct 2017.
+
+\bibitem{long2015fully}
+Jonathan Long, Evan Shelhamer, and Trevor Darrell.
+\newblock Fully convolutional networks for semantic segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 3431--3440, 2015.
+
+\bibitem{hrnet}
+Jingdong Wang, Ke~Sun, Tianheng Cheng, Borui Jiang, Chaorui Deng, Yang Zhao,
+  Dong Liu, Yadong Mu, Mingkui Tan, Xinggang Wang, Wenyu Liu, and Bin Xiao.
+\newblock Deep high-resolution representation learning for visual recognition.
+\newblock {\em TPAMI}, 2019.
+
+\bibitem{dhrnet}
+Daiki Ando and Shuichi Arai.
+\newblock Semantic segmentation using hrnet with deform-conv for feature
+  extraction dependent on object shape.
+\newblock In {\em 2021 3rd International Conference on Cybernetics and
+  Intelligent System (ICORIS)}, pp. 1--5, 2021.
+
+\bibitem{segnet}
+Vijay Badrinarayanan, Alex Kendall, and Roberto Cipolla.
+\newblock Segnet: A deep convolutional encoder-decoder architecture for image
+  segmentation.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  Vol.~39, No.~12, pp. 2481--2495, 2017.
+
+\bibitem{unet}
+Olaf Ronneberger, Philipp Fischer, and Thomas Brox.
+\newblock U-net: Convolutional networks for biomedical image segmentation.
+\newblock In {\em International Conference on Medical image computing and
+  computer-assisted intervention}, pp. 234--241. Springer, 2015.
+
+\bibitem{refinenet}
+Guosheng Lin, Anton Milan, Chunhua Shen, and Ian Reid.
+\newblock Refinenet: Multi-path refinement networks for high-resolution
+  semantic segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 1925--1934, 2017.
+
+\bibitem{resnet}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 770--778, 2016.
+
+\bibitem{raghu2017expressive}
+Maithra Raghu, Ben Poole, Jon Kleinberg, Surya Ganguli, and Jascha
+  Sohl-Dickstein.
+\newblock On the expressive power of deep neural networks.
+\newblock In {\em international conference on machine learning}, pp.
+  2847--2854. PMLR, 2017.
+
+\bibitem{cityscapes}
+Marius Cordts, Mohamed Omran, Sebastian Ramos, Timo Rehfeld, Markus Enzweiler,
+  Rodrigo Benenson, Uwe Franke, Stefan Roth, and Bernt Schiele.
+\newblock The cityscapes dataset for semantic urban scene understanding.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp. 3213--3223, 2016.
+
+\bibitem{hrnetv1}
+Ke~Sun, Bin Xiao, Dong Liu, and Jingdong Wang.
+\newblock Deep high-resolution representation learning for human pose
+  estimation.
+\newblock In {\em CVPR}, 2019.
+
+\bibitem{batchnorm}
+Sergey Ioffe and Christian Szegedy.
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock p. pp. 37:448^^e2^^80^^93456, 02 2015.
+
+\bibitem{small_model}
+Yifan Liu, Ke~Chen, Chris Liu, Zengchang Qin, Zhenbo Luo, and Jingdong Wang.
+\newblock Structured knowledge distillation for semantic segmentation.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pp. 2604--2613, 2019.
+
+\bibitem{imagenet}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In {\em 2009 IEEE conference on computer vision and pattern
+  recognition}, pp. 248--255. Ieee, 2009.
+
+\bibitem{relu}
+Vinod Nair and Geoffrey~E Hinton.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In {\em ICML}, 2010.
+
+\bibitem{softmax}
+Geoffrey~E Hinton and Russ~R Salakhutdinov.
+\newblock Replicated softmax: an undirected topic model.
+\newblock In {\em Advances in neural information processing systems}, pp.
+  1607--1614, 2009.
+
+\end{thebibliography}

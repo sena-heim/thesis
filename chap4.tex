@@ -1,0 +1,182 @@
+\chapter{実験} \label{sec_experience}
+
+\section{実験条件}
+  本節では実験条件として, 使用するデータセット, 評価指標, ハイパーパラメータ, 実験環境について述べる. 
+\subsection{データセット}
+本実験では``Cityscapes''\cite{cityscapes}を使用した. Cityscapesは都市のストリートシーンの画像で構成されており, 学習用画像が2975枚, 検証用画像が500枚, テスト用画像が1525枚の計5000枚用意されている. 学習の対象とするクラスはroad, sidewalk, building, wall, fence, pole, traffic light, traffic sign, vegetation, terrain, sky, person, rider, car, truck, bus, train, motorcycle, bicycleの19クラスである. 
+
+\subsection{評価指標}
+学習したモデルの性能を, スレットスコア(Threat Score)を用いた以下の2つの指標で評価する.
+\begin{itemize}
+\item IoU (Intersection over Union)
+\item MIoU (Mean Intersection over union)
+\end{itemize}
+スレットスコアは, 正解データと予測結果を2値で比較し, その正誤を表\ref{tab:hixyouka}のような4つの状態で表すConfusion Matrixを用いて定義する.
+\begin{table}[H]
+  \centering
+  \caption{Confusion Matrix}
+  \begin{tabular}{c|c|c}\hline \hline
+     & 正解はA & 正解はAではない \\ \hline 
+    Aと予測 & TP(True Positive) & FP(False Positive) \\ \hline
+    Aではないと予測 & FN(False Negative) & TN(True Negative) \\ \hline \hline
+  \end{tabular}
+  \label{tab:hixyouka}
+\end{table}
+True, Falseは正しく予測できたかを表し, Positive, Negativeは正と負のどちらに予測されたかを表している. semantic segmentationおいて, True Positiveは例えばAというクラスを正しくAと判定できたピクセル数, False Positiveは別のクラスであるにもかかわらずクラスAと誤った判定したピクセル数, False NegativeはAというクラスにもかかわらず別のクラスと誤った判定をしたピクセル数である. \\
+次に, スレットスコアの計算式を示す. そもそもスレットスコアは気象分野で用いられる指標だが, ここでTP, FPをそれぞれTrue Positive, False Positiveのピクセル数とし, FNをFalse Negativeのピクセル数として, semantic segmentationの評価値としてスレットスコアを用いたとき, このスコア値をIoU(Intersection over Union)と呼び, 式(\ref{eq:iou})のように書ける. IoUはクラスごとに求まるが, これを全体のクラス数$C$で平均したものをMIoU(Mean Intersection over Union)と呼び, 式(\ref{eq:miou})のように書ける.
+
+\begin{eqnarray}
+  \rm{IoU} &=& \frac{\rm{TP}}{\rm{TP} + \rm{FP} + \rm{FN}}\label{eq:iou}\\
+  \rm{MIoU} &=& \frac{1}{C} \sum_{C=1}^C \frac{\rm{TP}_c}{\rm{TP}_c + \rm{FP}_c + \rm{FN}_c}\label{eq:miou}
+\end{eqnarray}
+
+\subsection{ハイパーパラメタ}\label{sub:hypara}
+従来手法であるHRNet\cite{hrnet}と比較するため, 同じハイパーパラメタを使用した. 使用したハイパーパラメタを表\ref{tab:hypara}に示す. 
+\begin{table}[H]
+  \centering
+  \caption{使用したハイパーパラメタ}
+  \begin{tabular}{c|c} \hline \hline
+     Batch Size & 12 \\ \hline 
+     Epoch & 484  \\ \hline
+     活性化関数(中間層) & ReLU \\ \hline
+     活性化関数(出力層) & SoftMax\\ \hline \hline
+  \end{tabular}
+  \label{tab:hypara}
+\end{table}
+
+\subsection{実験環境}
+本研究では以下の環境で実験を行った.
+\begin{itemize}
+\item Python 3.6.12
+\item Pytorch 1.5
+\item Tesla V100(32GB)
+\end{itemize}
+
+
+\section{実験結果及び検討}
+% 提案手法の有用性を確認するために２つの実験を行う. なお, 
+本実験の目的の１つがdeformable convolutionのoffsetベクトルの挙動を評価することである. しかし, deformable convolutionが２つ含まれている既存のDHNetでは, offsetベクトルの挙動を複合的に考える必要があるため, 妥当な評価ができないと考えた. 
+よって実験では, DHRNetのDeformable Basic Blockを 図\ref{fig:defbasicblockv2}に示すようなdeformable convolution が１層のみに変更したDHRNet(deform-conv １層)をベースにして実験を行う. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{./images/DeformBlock_deform-conv1.eps}
+    \caption{Deformable Basic Block(deform-conv １層)}
+    \label{fig:defbasicblockv2}
+\end{figure}
+
+\subsection{DHRNetの有効性の確認}
+本研究では, 提案する活性化関数をoffsetに適応することの妥当性を検討する. 
+そのために, まずDHRNet(deform-conv １層)の有効性を確認する. これを実験１とする. HRNetとDHRNet(deform-conv 2層), DHRNet(deform-conv 1層)のクラス全体の結果を表\ref{tab:tekiyouiti}に示す.
+
+\begin{table}[H]
+    \centering
+    \caption{実験1の結果(クラス全体)}
+    \begin{tabular}{c|c} \hline \hline
+       & MIoU(\%)  \\ \hline
+      HRNet & 70.26  \\ \hline
+      DHRNet(deform-conv 2層) & $\mathbf{74.22}$  \\ \hline
+      DHRNet(deform-conv 1層) & 73.52  \\ \hline \hline 
+    \end{tabular}
+    \label{tab:tekiyouiti}
+\end{table}
+表\ref{tab:tekiyouiti}より, DHRnet(deform-conv)はDHRNetより0.7pt減少したが, HRNetからは3.26pt向上した. \\
+次に, \ref{sec:mokuteki}節で示した (1)受容野の形状が物体によって変化しているように見えない. (2)受容野が影響を及ぼす範囲外まで広がっている.  という問題点がDHRNet(deform 1層)にも現れているかを確認するため, offsetの可視化を図\ref{fig:def1_4}に, offsetのx軸成分とy軸成分の分布を表したグラフを\ref{fig:def1_4_x}と\ref{fig:def1_4_y}に示す. \ref{fig:def1_4_x}と\ref{fig:def1_4_y}のx軸はoffsetの値であり, y軸は頻度である. なお, 赤い点線はoffsetベクトルの存在するべき範囲を表す.
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[scale=0.15]{./images/deform1ly4.eps}
+    \end{center}
+    \caption{DHRNetのoffsetの可視化}
+    \label{fig:def1_4}
+\end{figure}
+
+可視化結果(図\ref{fig:def1_4})の評価画素ごとに受容野の形状を比較すると大きさによる変化は確認できるが, 形状の変化はあまり見られない. 次に\ref{fig:def1_4_x}と\ref{fig:def1_4_y}を見ると, -6以上６以下の範囲外に値が存在する. よって, DHRNet(deform-conv 1層)を実験に使用するのに適しているといえる.
+% また, 図\ref{fig:def1_4}の各評価画素の中心サンプリング点が
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[scale=0.20]{./images/deform1_4_0_x.eps}
+  \end{center}
+  \caption{offsetのx成分の分布}
+  \label{fig:def1_4_x}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[scale=0.20]{./images/deform1_4_0_y.eps}
+  \end{center}
+  \caption{offsetのy成分の分布}
+  \label{fig:def1_4_y}
+\end{figure}
+
+
+\subsection{提案手法の有効性の確認}
+実験１でDHRNet(deform-conv 1層)が評価実験のベースとできることを確認した. よって提案する活性化関数の評価を行う, さらにカーネルの中心offsetを固定することでcnnの位置普遍性を担保することの有効性の検証も行う. 仮説としては, offsetの範囲に制限を設けることにより, 学習が促進され, 中心のoffsetを0に制限することでさらに学習が進むと考えた. この仮説より, 2つの条件で実験を行った.
+
+\begin{description}
+   \item[提案手法１] DHRNet(deform-conv 1層)のoffset算出部分にhard tanh6を導入
+   \item[提案手法2] DHRNet(deform-conv 1層)のoffset算出部分にhard tanh6を導入することに加え, 中心のoffsetベクトルを0に固定
+\end{description}
+
+実験2のクラス全体の結果を表\ref{tab:ikken2_miou}, クラスごと結果を表\ref{tab:zikken2_iou}に示す.
+
+\begin{table}[H]
+    \centering
+    \caption{実験2の結果(クラス全体)}
+    \begin{tabular}{c|c|c} \hline \hline
+      & baseline & MIoU(\%)  \\ \hline
+      & HRNet & 70.26  \\ \hline
+      deform-conv 1層 & DHRNet & 73.52  \\ \hline
+      \begin{tabular}{l}deform-conv 1層 \\+ hard hanh6\end{tabular} & DHRNet & $\mathbf{73.85}$  \\ \hline
+      \begin{tabular}{l}deform-conv 1層 \\+ hard tanh6\\(中心のoffset 0)\end{tabular} & DHRNet &73.28  \\ \hline \hline
+    \end{tabular}
+    \label{tab:ikken2_miou}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{実験2の結果(クラスごと)}
+  \begin{tabular}{c|c|c|c|c} \hline \hline
+   クラス & \multicolumn{4}{|c}{IoU(\%)}\\ \hline 
+   & HRNet & deform-conv 1層 & \begin{tabular}{l} deform-conv 1層 \\ + hard tanh6\end{tabular} & \begin{tabular}{l} deform-conv 1層 \\+ hard tanh6\\(中心のoffset 0)\end{tabular} \\ \hline 
+    road & 97.64 & 97.88 & $\mathbf{97.89}$ & 97.84  \\ \hline
+    sidewalk & 82.21 & 83.00 & $\mathbf{83.03}$ & 82.80 \\ \hline
+    building & 90.90 & 91.62 & $\mathbf{91.66}$ & 91.63 \\ \hline
+    wall & 47.10 & 51.90 & 50.37 & $\mathbf{54.53}$ \\ \hline
+    fence & 53.05 & 55.40 & 57.56 & $\mathbf{57.80}$ \\ \hline
+    pole & 60.42 & 61.67 & $\mathbf{61.92}$ & 61.71 \\ \hline
+    traffic light & 63.87 & 63.17 & $\mathbf{64.86}$ & 64.45 \\ \hline
+    traffic sign & 74.33 & $\mathbf{75.27}$  & 75.06 & 74.82 \\ \hline
+    vegetation & 91.89 &  91.97 & $\mathbf{92.11}$ & 92.08 \\ \hline
+    terrain & 62.19 &  62.52 & $\mathbf{63.15}$ & 62.51 \\ \hline
+    sky & 93.74 & $\mathbf{94.40}$ & 94.30 & 94.26 \\ \hline
+    person & 78.58 & 79.00 & $\mathbf{79.45}$ & 78.83 \\ \hline
+    rider & 53.95 &  57.44 & $\mathbf{58.11}$ & 55.60 \\ \hline
+    car & 93.14 & $\mathbf{93.84}$ & 93.64 & 93.81 \\ \hline
+    truck & 50.54 & $\mathbf{67.19}$ & 61.18 & 65.63 \\ \hline
+    bus & 70.68 & $\mathbf{80.93}$ & 79.74 & 78.34 \\ \hline
+    train & 47.08 & 61.85 & $\mathbf{67.30}$ & 58.55 \\ \hline
+    motorcycle & 49.82 & 54.48 & $\mathbf{57.57}$ & 52.73 \\ \hline
+    bicycle & 73.73 & 73.57 & 74.20 & $\mathbf{74.46}$ \\ \hline \hline
+  \end{tabular}
+  \label{tab:zikken2_iou}
+\end{table}
+
+表\ref{tab:ikken2_miou}より, DHRNet(deform-conv 1層)にhard tanh6を適応した提案手法１は, DHRNet(deform-conv 1層)から0.33pt向上している. そしてはDHRNet(deform-conv 1層)にhard tanh6を適応し, 中心のoffsetを0に固定した提案手法２は, DHRNet(deform-conv 1層)から0.24pt低下した. また\ref{tab:ikken2_miou}より, hard tanh6を適応した提案手法１は, DHRNet(deform-conv 1層)と比べて19クラス中13クラスで精度が高かった. よって, deformable convolutionのoffsetの範囲に制限を設けることで学習が促進することがわかった. 
+次にoffsetに制限を加えたことでどのように受容野が変更されているかを確認するために, offsetの可視化結果を示す.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.15]{./images/deform_1_4_tanh6.eps}
+    \caption{deform-conv+hard tanh6のoffset}
+    \label{fig:deformtanh6}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.15]{./images/deform_1_4_tanh6_c0.eps}
+    \caption{deform-conv+hard tanh6(中心のoffsetベクトルを0に固定)のoffset}
+    \label{fig:deformtanh6c0}
+\end{figure}
+
+図\ref{fig:deformtanh6}と図\ref{fig:deformtanh6c0}より, 受容野が指定した範囲内に制限されていることが確認できた.

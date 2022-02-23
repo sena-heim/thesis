@@ -1,0 +1,424 @@
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.8)  23 FEB 2022 02:20
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**main.tex
+(./main.tex
+pLaTeX2e <2020-10-01>+2 (based on LaTeX2e <2020-10-01> patch level 4)
+L3 programming layer <2021-02-18> (./ronbun.cls
+Document Class: ronbun 
+\c@@paper=\count178
+(/usr/local/texlive/2021/texmf-dist/tex/platex/base/jsize12.clo
+File: jsize12.clo 2020/09/30 v1.8f Standard pLaTeX file (size option)
+)
+\c@part=\count179
+\c@chapter=\count180
+\c@section=\count181
+\c@subsection=\count182
+\c@subsubsection=\count183
+\c@paragraph=\count184
+\c@subparagraph=\count185
+\c@figure=\count186
+\c@table=\count187
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\symmincho=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `mincho' in version `bold'
+(Font)                  JY1/mc/m/n --> JY1/gt/m/n on input line 688.
+\toclineskip=\dimen154
+\@lnumwidth=\dimen155
+\bibindent=\dimen156
+\heisei=\count188
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 2017/06/25 v1.7b (e)psfig emulation (SPQR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 105.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics-def/dvips.def
+File: dvips.def 2017/06/20 v3.1d Graphics/color driver for dvips
+))
+\Gin@req@height=\dimen157
+\Gin@req@width=\dimen158
+)
+\epsfxsize=\dimen159
+\epsfysize=\dimen160
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/09/23 v2.17i AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks17
+\ex@=\dimen161
+))
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen162
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count189
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count190
+\leftroot@=\count191
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count192
+\DOTSCASE@=\count193
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box64
+\strutbox@=\box65
+\big@size=\dimen163
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count194
+\c@MaxMatrixCols=\count195
+\dotsspace@=\muskip17
+\c@parentequation=\count196
+\dspbrk@lvl=\count197
+\tag@help=\toks18
+\row@=\count198
+\column@=\count199
+\maxfields@=\count266
+\andhelp@=\toks19
+\eqnshift@=\dimen164
+\alignsep@=\dimen165
+\tagshift@=\dimen166
+\tagwidth@=\dimen167
+\totwidth@=\dimen168
+\lineht@=\dimen169
+\@envbody=\toks20
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2923.
+LaTeX Info: Redefining \] on input line 2924.
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip52
+\multirow@cntb=\count267
+\multirow@dima=\skip53
+\bigstrutjot=\dimen170
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/here/here.sty)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count268
+\float@exts=\toks22
+\float@box=\box66
+\@float@everytoks=\toks23
+\@floatcapt=\box67
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen171
+\captionmargin@=\dimen172
+\captionwidth=\dimen173
+\caption@tempdima=\dimen174
+\caption@indent=\dimen175
+\caption@parindent=\dimen176
+\caption@hangindent=\dimen177
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = \long macro:#1#2-> \vskip \abovecaptionsk
+ip \iftdir \sbox \@tempboxa {#1\hskip 1zw#2} \else \sbox \@tempboxa {#1: #2} \f
+i \ifdim \wd \@tempboxa >\hsize \iftdir #1\hskip 1zw#2\relax \par \else #1: #2\
+relax \par \fi \else \global \@minipagefalse \hbox to\hsize {\hfil \box \@tempb
+oxa \hfil } \fi \vskip \belowcaptionskip  on input line 1139.
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count269
+\c@continuedfloat=\count270
+Package caption Info: float package is loaded.
+)
+\c@subfigure=\count271
+\c@subtable=\count272
+) (/usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
+File: l3backend-dvips.def 2021-03-18 L3 backend support: dvips
+\l__pdf_internal_box=\box68
+\g__pdf_backend_object_int=\count273
+\l__pdf_backend_content_box=\box69
+\l__pdf_backend_model_box=\box70
+\g__pdf_backend_annotation_int=\count274
+\g__pdf_backend_link_int=\count275
+\g__pdf_backend_link_sf_int=\count276
+) (./main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+ (./title.tex [1
+
+])
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <24.88> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 38.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <24.88> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 38.
+
+Overfull \hbox (6.22pt too wide) in paragraph at lines 38--38
+[] [] 
+ []
+
+(./main.toc
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
+ [1
+
+])
+\tf@toc=\write3
+\openout3 = `main.toc'.
+
+ [2] (./chap1.tex
+第 1 章
+) (./chap2.tex [1
+
+]
+第 2 章
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 6.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 6.
+File: ./images/fig1.eps Graphic file (type eps)
+<./images/fig1.eps> [2
+
+]
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 21.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 21.
+File: ./images/example_cnn2.eps Graphic file (type eps)
+ <./images/example_cnn2.eps> [3]
+File: ./images/fig2.eps Graphic file (type eps)
+ <./images/fig2.eps>
+File: ./images/padding.eps Graphic file (type eps)
+
+<./images/padding.eps> [4]
+File: ./images/fig3.eps Graphic file (type eps)
+ <./images/fig3.eps> [5]
+File: ./images/fig4.eps Graphic file (type eps)
+ <./images/fig4.eps> [6]
+File: ./images/hrnet_fig.eps Graphic file (type eps)
+
+<./images/hrnet_fig.eps>
+File: ./images/offset.eps Graphic file (type eps)
+ <./images/offset.eps> [7]
+File: ./images/offset_deform22.eps Graphic file (type eps)
+
+<./images/offset_deform22.eps>
+File: ./images/offset_deform24.eps Graphic file (type eps)
+ <./images/offset_deform24.eps>
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 122--136
+[][]$[]$[] []$[]$[] 
+ []
+
+) (./chap3.tex [8] [9]
+第 3 章
+
+Overfull \hbox (19.6537pt too wide) in paragraph at lines 4--4
+[]\OT1/cmr/bx/n/17.28 DHRNet (De-formable con-vo-lu-tion High-Resolution
+ []
+
+File: ./images/DHRNet.eps Graphic file (type eps)
+<./images/DHRNet.eps>
+Overfull \hbox (0.75755pt too wide) in paragraph at lines 8--9
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[10
+
+]
+File: ./images/BasicBlock.eps Graphic file (type eps)
+ <./images/BasicBlock.eps> [11]
+File: ./images/resnet.eps Graphic file (type eps)
+ <./images/resnet.eps>
+File: ./images/bottleneck.eps Graphic file (type eps)
+
+<./images/bottleneck.eps>
+Overfull \hbox (9.09538pt too wide) in paragraph at lines 34--35
+ [][] 
+ []
+
+[12]
+File: ./images/exchange.eps Graphic file (type eps)
+ <./images/exchange.eps> [13]
+File: ./images/DeformBlock_deform-conv2.eps Graphic file (type eps)
+ <./images/DeformBlock_deform-conv2.eps>
+File: ./images/Defconv_offset.eps Graphic file (type eps)
+
+<./images/Defconv_offset.eps> [14]
+File: ./images/defconv_offset2.eps Graphic file (type eps)
+ <./images/defconv_offset2.eps> [15]
+File: ./images/conv_ptn.eps Graphic file (type eps)
+
+<./images/conv_ptn.eps> [16]
+File: ./images/hardtanh.eps Graphic file (type eps)
+ <./images/hardtanh.eps>
+File: ./images/hardtanh6.eps Graphic file (type eps)
+ <./images/hardtanh6.eps>
+[17]
+File: ./images/samplingten_c0.eps Graphic file (type eps)
+ <./images/samplingten_c0.eps> [18]) (./chap4.tex [19]
+第 4 章
+[20
+
+] [21]
+File: ./images/DeformBlock_deform-conv1.eps Graphic file (type eps)
+ <./images/DeformBlock_deform-conv1.eps> [22]
+File: ./images/deform1ly4.eps Graphic file (type eps)
+
+<./images/deform1ly4.eps>
+File: ./images/deform1_4_0_x.eps Graphic file (type eps)
+ <./images/deform1_4_0_x.eps>
+File: ./images/deform1_4_0_y.eps Graphic file (type eps)
+
+<./images/deform1_4_0_y.eps> [23] [24]
+Overfull \hbox (42.69467pt too wide) in paragraph at lines 166--168
+[]\JY1/mc/m/n/12 表 \OT1/cmr/m/n/12 4.4 \JY1/mc/m/n/12 より\OT1/cmr/m/n/12 , DH
+RNet(deform-conv 1 \JY1/mc/m/n/12 層\OT1/cmr/m/n/12 ) \JY1/mc/m/n/12 に \OT1/cm
+r/m/n/12 hard tanh6 \JY1/mc/m/n/12 を適応した提案手法１は\OT1/cmr/m/n/12 , DHRN
+et(deform-
+ []
+
+File: ./images/deform_1_4_tanh6.eps Graphic file (type eps)
+<./images/deform_1_4_tanh6.eps>
+File: ./images/deform_1_4_tanh6_c0.eps Graphic file (type eps)
+ <./images/deform_1_4_tanh6_c0.eps> [25])
+(./chap5.tex [26]
+第 5 章
+) (./thx.tex [27
+
+]
+Overfull \hbox (6.22pt too wide) in paragraph at lines 1--1
+[] [] 
+ []
+
+) (./main.bbl [28
+
+]
+Overfull \hbox (6.22pt too wide) in paragraph at lines 1--1
+[] [] 
+ []
+
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 7.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 13.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 19.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 26.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 32.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 39.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 45.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 52.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 58.
+[29
+
+]
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 65.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 71.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 78.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 84.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 91.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 98.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 105.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 116.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 122.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 128.
+LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
+(Font)              No change on input line 133.
+ [30]) (./furoku.tex [31]
+付 録 A  
+[32
+
+] [33]) [34] (./main.aux) ) 
+Here is how much of TeX's memory you used:
+ 3339 strings out of 479466
+ 54128 string characters out of 5870549
+ 368264 words of memory out of 5000000
+ 20971 multiletter control sequences out of 15000+600000
+ 419924 words of font info for 90 fonts, out of 8000000 for 9000
+ 929 hyphenation exceptions out of 8191
+ 83i,16n,88p,987b,591s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on main.dvi (37 pages, 92580 bytes).

@@ -1,0 +1,52 @@
+\documentclass[12pt,a4j]{ronbun}
+
+% 必要に応じて使うパッケージを書きましょう
+\usepackage{epsfig}
+\usepackage{url}		% URL参考文献を引くため
+\usepackage{amsmath}	% キャプション内部での改行用
+% \usepackage[dvips]{graphicx}
+% \usepackage[]{graphicx}
+%\usepackage[dvipdfmx]{}
+% \usepackage{multicol}	% 表で横結合
+\usepackage{multirow}	% 表で縦結合
+% \usepackage{sty/slashbox}   % 表内部でスラッシュ
+% \usepackage{columncolor}
+% \usepackage{hspace}
+%\usepackage{amssymb}
+%\usepackage{hangcaption}
+%\usepackage{tabularx}
+%\usepackage{graphicx}
+%\usepackage{amsmath}
+%\usepackage{here}
+%\usepackage{epsbox}
+% \usepackage{color}
+% \usepackage{ascmac}
+\usepackage{lscape}
+
+\usepackage{here}
+%\usepackage{epsbox}
+\usepackage[subrefformat=parens]{subcaption}
+
+
+\textwidth=160mm
+
+%--------------------------------------------------
+\begin{document}
+	\bibliographystyle{junsrt}
+
+	\input{title.tex}
+	\tableofcontents
+	% チャプターが増えるごとに'chap[N].texファイルを作成してここに追記しましょう。
+	\input{chap1.tex}		% 序論
+	\input{chap2.tex}		% 背景
+	\input{chap3.tex}		% 提案
+	\input{chap4.tex}		% 実験
+	\input{chap5.tex}		% 結論
+
+	\input{thx.tex}			% 謝辞
+	\nocite{*}
+	\bibliography{ref}
+	\input{furoku.tex}
+\end{document}
+
+%--------------------------------------------------

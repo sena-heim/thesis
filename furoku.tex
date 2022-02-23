@@ -1,0 +1,72 @@
+\appendix
+\begin{chapter}{基礎事項}
+\section{活性化関数}\label{hu:ac_fn}
+活性化関数とは，線形分離できない問題を解くために，ニューラルネットワークの各ユニットからの出力を正規化する非線形な関数である.代表的な関数として Sigmoid 関数や Tanh 関数などがあるが，Semantic Segmentationのネットワークの場合, 中間層では``ReLU''\cite{relu}, 出力層では分類問題で多く用いられる``Softmax''\cite{softmax}を使用するのが一般的である. 以下に本研究で使用する活性化関数について記述する.  
+\subsection*{Softmax 関数}
+Softmax 関数 [19] は主に多クラス分類問題での出力層に用いられる.出力層のニューロンの数が $n$ 個あるとして，$k$ 番目の入力 $x_k$ に対する出力 $y_k$ を求める計算式は，
+\begin{equation}
+    \begin{split}
+        y_k = \frac{\exp(a_i)}{\sum_j^n \exp(a_j)},\;(i=1,\ldots,n)
+    \end{split}
+\end{equation}
+となる.Softmax 関数の出力は，0 から 1 の間の実数になる.また，Softmax 関数の出力 の総和は 1 になる.この性質から Softmax 関数の出力は多クラス問題における確率値とし て解釈できる.
+\subsection*{ReLU(Rectified Linear Unit) 関数}
+ReLU 関数 [20] は図 3.3 のように，入力値が正ならば値をそのまま出力し，負ならば 0 を出力する関数である.
+入力を x としたときの式は，
+\begin{equation}
+h(x) = 
+    \begin{cases}
+        x  (x>0)\\
+        0  (x<=0)
+    \end{cases}
+\end{equation}
+となる.このように ReLU 関数はシンプルであることから，層の数が多くなっても安定した学習ができるため，深層学習の研究において最もよく用いられている活性化関数である.
+
+\subsection*{tanh(Hyperbolic Tangent) 関数}
+tanh関数は式(\ref{eq:tanh})に示す関数であり, 出力は-1から1の範囲である.
+\begin{equation}
+\tanh(x) = \frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} \label{eq:tanh}
+\end{equation}
+
+\subsection*{hard tanh 関数}
+hard tanh関数は式(\ref{eq:hard_tanh})に示す関数であり, tanhよりも計算量が少ない. 
+\begin{equation}
+  hard tanh(x) = 
+      \begin{cases}
+        1  (x>1)\\ 
+        x  (-1<=x<=1)\\
+        0  (x<-1) \label{eq:hard_tanh}
+      \end{cases}
+\end{equation}
+
+\section{Batch Normalization}\label{hu:bn}
+``Batch Normalization''\cite{batchnorm}は, データ全体をいくつかの小さなデータの集合に分割した``ミニバッチ''ごとにデータの分布を平均を0, 分散が1になるように正規化する手法である. この手法により, 学習データに過度に適応してしまう``過学習''を抑制することができる.
+\section{バイリニア補間}\label{hu:bi}
+バイリニア補間は画像の拡大, 回転, 変形を行うときの画素補間の一種である. 求めたい座標の画素値の周囲$2\times2$画素値を参照し, その加重平均値を用いて補間する. バイリニア補間の式を式(\ref{eq:bi})に示す. なお$f$は画素値, $(x_0, y_0)$は着目点の座標, $(x, y)$は$(x_0, y_0)$の周囲の格子点座標を表す.
+\begin{equation}
+  \begin{split}
+  f(x_0, y_0) &= f(x, y)(1-\alpha)(1-\beta)+f(x+1, y)\alpha(1-\beta)\\
+  &+ f(x, y+1)(1-\alpha)\beta+f(x+1, y+1)\alpha\beta\\ \label{eq:bi}
+  \end{split}
+\end{equation}
+\begin{equation}
+  \begin{split}
+  x &= \lfloor x_0 \rfloor  \nonumber\\
+  y &= \lfloor y_0 \rfloor \nonumber\\
+  \alpha &= x - \lfloor x_0 \rfloor  \nonumber\\
+  \beta &= y -\lfloor y_0 \rfloor  \nonumber
+  \end{split}
+\end{equation}
+ 
+\section{$1\times1$Convolution(Pointwise Convolution)}\label{hu:1x1}
+$1\times1$Covnolution(Pointwise Convolution)は, $1\times1$カーネルで畳み込み演算を行う. 通常のConvolutionは入力特徴マップの空間方向(幅, 高さ)とチャンネル方向に同時に畳み込む. 対し, $1\times1$Convolutionでは, チャンネル方向のみに畳み込む. そのため$1\times1$Convolutionはチャンネル数の調整に用いられる.  
+
+
+\section{誤差逆伝播法(Back-propagation)}\label{hu:backprop}
+ニューラルネットワークは損失関数(付録\ref{hu:lossfunc})が最小になるように学習していくが, その際に損失関数が減少する方向を示す勾配が必要になる. この勾配を効率よく求める方法として誤差逆伝播法がある. 誤差逆伝播法は, 誤差を出力層から前の層へ次々と伝播していくことで, 各層の重みの勾配を求める. 
+
+\section{損失関数}\label{hu:lossfunc}
+損失関数はネットワークの出力結果と正解データの誤差を表す関数である. 出力結果が正解データに近づくほど損失関数から得られる誤差は小さく, 出力結果が正解データから離れるほど誤差は大きくなる. ニューラルネットワークでは損失関数が最小になるように学習する. 
+
+
+\end{chapter}

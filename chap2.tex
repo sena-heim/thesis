@@ -1,0 +1,140 @@
+\chapter{背景}\label{chap:haikei}
+Semantic segmentataionでは, 深層学習を用いた手法が多く提案されている. その中でも CNN(Convolutional Neural Network)\cite{cnn}を用いた手法により認識精度は飛躍的に向上した. そのことから, 今までにCNNをもとにした手法は数多く提案され, アーキテクチャが改良されてきた. そして近年, convolutionを改良したdeformable convolution\cite{defconv}を用いたことにより, さらに認識精度が向上した. しかし, deformacle convolutionの挙動は調査されていない. \\
+本章では, まず\ref{chap:semantic}節でsemantic segmentationを概説することにより本研究分野の立ち位置を明確にする. その上で, \ref{sec:zyuurai}節でsemantic segmentationにおいて現在までに提案されてきたCNNをもとにした従来手法を紹介し, 従来手法のネットワークに共通する構造上の問題点を明らかにする. 次に, \ref{subsec:hrnet}項で従来手法の問題点を改善した手法を取り上げ, 最後に\ref{sec:mokuteki}節でこれらの従来手法の問題点を明らかにしたうえで, 本論文の研究目的を定義する.
+
+
+\section{Semantic segmentation}\label{chap:semantic}
+Semantic segmentationは入力画像に対してピクセル単位でクラス分類を行うことで, 画像中の様々な物体をそれぞれの外形で領域分割する技術である[3][4]. 図\ref{fig:seg_rei}中の上段は入力画像であり, 下段に示すクラスごとに入力画像を分離した結果が中段の画像である. そのため, semantic segmentation は画像中に存在する様々な物体が，それぞれどのクラスに属し，どのような形状で，どの位置に存在するのかを表現可能であり，シーン理解のタスクにおいて重要な手法である.近年では, 深層学習を用いた手法の提案により, 以前よりさらに高精度な推論が可能になった\cite{long2015fully}. 
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.28]{./images/fig1.eps}
+    \caption{Semantic Segmentatioinの例(上段:入力画像, 中段:分類結果, 下段:クラス凡例)\cite{semaseg2}}
+    \label{fig:seg_rei}
+\end{figure}
+
+\section{従来研究}\label{sec:zyuurai}
+Semantic segmentationは深層学習を用いた手法が多く提案されてきた. それらの多くはCNNを元としている. 本節では, 多くの手法の元となっているCNNを説明した後に, CNNを用いた手法の代表例である Bottleneck 構造の CNNを紹介する.  その後に従来のBottleneck 構造の CNN より高精度なセグメンテーションを可能にした HRNet (High-Resolution Network)\cite{hrnet}を説明した上で,  CNNに変更を加えることでHRNetを改良した DHRNet (Deformable High-Resolution Network)\cite{dhrnet} を説明する.
+
+\subsection{CNN(Convolutional Neural Network)}\label{subsec:cnn}
+画像認識では主にCNN\cite{cnn}が用いられてきた. CNNは図\ref{fig:conv_ex}に示すような深層学習に用いられる多層ニューラルネットワークの1つである. 図\ref{fig:conv_ex}では入力画像を畳み込み層(convolution layer), プーリング層(pooling layer)で特徴量抽出した後, 一般的な全結合ネットワークがもつ全結合層(full connection layer)に通すことでクラス分類をおこなっている. ネットワークを多層にすることで，入力に近い層ではエッジなどの特徴を抽出し, 深い層になるにつれ, より抽象的な特徴を抽出できるように構成されている. semantic segmentationでは, ネットワークの出力がCNNの全結合層を畳み込み層に置き換えた, 畳み込み層, プーリング層 のみで構成される FCN(Fully Convolutional Network)\cite{long2015fully} をベースとしたアーキテクチャが多く提案されている. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.35]{./images/example_cnn2.eps}
+  \caption{Convolutional Neural Networkの例}
+  \label{fig:conv_ex}
+\end{figure}
+\subsubsection*{畳み込み(Convolution)}
+% この処理により画像の局所的な特徴を抽出でき, 物体の形状を学習できる.
+畳み込みは, 入力データと学習した重みを持つフィルタとで畳み込み演算をして, ``特徴マップ''を出力する処理である. 畳み込み演算は, 図\ref{fig:conv}の灰色で表したフィルタを一定間隔でスライドさせながら, フィルタの要素と入力データの対応する要素を乗算し, その和を求める演算である. また畳み込みはフィルタの数, フィルタのサイズ, ストライド, パディングという設定する必要のあるパラメタを持つ. \\
+まず, フィルタの数があり, 設定したフィルタの数だけ特徴マップを出力する. \\
+次にフィルタのサイズはフィルタの幅と高さであり, 図\ref{fig:conv}のカーネルは高さ3, 幅3である. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{./images/fig2.eps}
+    \caption{Convolutionの例(＊は畳み込み積分)}
+    \label{fig:conv}
+\end{figure}
+
+入力データを$I(x, y)$, 出力特徴マップを$O(x, y)$, フィルタカーネルを$h(m, n)$, フィルタサイズを$(2M+1)\times(2N+1)$とした場合, 畳み込みは式(\ref{eq:conv1})のように書ける.
+
+\begin{equation}
+  O(x, y) = \sum_{m=-M}^M \sum_{n=-N}^N h(m,n)I(x+m, y+n) \label{eq:conv1}
+\end{equation}
+
+入力データ$I(x, y)$のサイズを$(X, Y)$とすると, 出力特徴マップ$O(x, y)$は($M<=x<X-M, N<=y<Y-N$)の範囲までしか求められず, 出力特徴マップのサイズが小さくなってしまう. これを防ぐためにはパディングという処理を行う. パディングは, 図\ref{fig:padding}のように入力データの周囲を一定の値で埋める処理である. パディングにより出力特徴マップ$O(x, y)$は($0<=x<X, 0<=y<Y$)のように入力データと同じサイズの出力特徴マップになる.  
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.35]{./images/padding.eps}
+  \caption{パディングの例}
+  \label{fig:padding}
+\end{figure}
+
+ストライドはフィルタカーネルを移動させる間隔を決めるパラメータである. パディングが入力データと出力特徴マップのサイズを合わせるための処理であるのに対し, ストライドは1より大きい整数に変更することで出力特徴マップのサイズを縮小させることができる.  
+
+ストライドを１より大きい整数$s$に変更したConvolutionは式(\ref{eq:stconv})のように書ける.
+
+\begin{equation}
+ O(x, y) = \sum_{m=-M}^M \sum_{n=-N}^N h(m,n)I(sx+m, sy+n) \label{eq:stconv}
+\end{equation}
+
+これにより$O(x,y)$は($0<=x<\frac{X}{s}, 0<=y<\frac{Y}{s}$)のように出力特徴マップのサイズが小さくなる. しかし$s$を大きくしていくと, それに伴い特徴を見落とす可能性が高くなる. 特に$s$がフィルタカーネルの高さ, または幅を超えてしまうと明らかにフィルタに覆われない領域が出現し, 特徴を見落としてしまう. そのため, 特徴を見落とさないためには, ストライド$s$をフィルタカーネルの高さ, 幅より小さいサイズに収めるか, 後述するプーリングにより出力特徴マップを小さくする方法がある. 
+
+
+
+\subsubsection*{プーリング(Pooling)}
+プーリングは, 畳み込みにより得られた特徴マップのサイズを縮小する処理である. この処理はパラメータの削減や, 受容野を広げる役割があり, また微小な位置ずれに対しロバストになる. 領域内の最大値を得るMax Pooling(図\ref{fig:pooling})や領域内の平均を得るAverage Poolingなどがある. ストライド2の畳み込みとストライド1の畳み込み + $2\times2$Poolingは出力特徴マップのサイズという面では同じであるが, 前夜が畳み込みの間隔を大きくして特徴マップを小さくしただけなのに対し, 後者は特徴量抽出を行なった後により値が大きい特徴を残して抽象化するという面で, 後者の方が処理の意味付けが明確にできる.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.35]{./images/fig3.eps}
+  \caption{Max Poolingの例}
+  \label{fig:pooling}
+\end{figure}
+
+\subsection{Bottleneck構造のCNN}\label{subsec:en_de_cnn}
+Semantic segmentation の手法として, bottleneck構造のCNNが多く用いられている. 
+bottleneck構造のCNNは, 入力画像を特徴量抽出しつつ, 解像度を下げていき, 学習可能な層などを用いて入力画像と同等の解像度まで復元する構造をもっている.
+bottleneck構造のCNNの例を図\ref{fig:segnet}に示す. 図\ref{fig:segnet}のエンコーダ部分では特徴量を抽象化していき, 低解像度になった特徴マップを図\ref{fig:segnet}のデコーダー部分で特徴抽出をしつつ, 高解像度化している. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.22]{./images/fig4.eps}
+    \caption{bottleneck構造の CNN(SegNet\cite{segnet})}
+    \label{fig:segnet}
+\end{figure}
+
+bottleneck構造のCNNの代表的なアーキテクチャには, ``SegNet''\cite{segnet}, ``U-Net''\cite{unet}, ``RefineNet''\cite{refinenet}などがある.
+これらの手法では, 入力に近い部分で抽出した特徴マップを一旦抽象化してしまうため, 高解像度の特徴マップがもつ物体の詳細な形状の情報が失われてしまう. これは物体の形状を正確に認識する必要があるsemantic segmentationにおいて大きな問題である.
+
+\subsection{HRNet (High-Resolution Network)}\label{subsec:hrnet}
+HRNet\cite{hrnet}は, 高解像度と低解像度の特徴マップを直列に扱う従来の手法とは異なり, ネットワーク全体を通し高解像度の特徴マップを維持できる構造を持っている. 高解像度の特徴マップのみでは抽象的な特徴は抽出できないため, 層が深くなるごとに低解像度化したネットワークを追加することで, 図\ref{fig:hrnet}に示す最上段の灰色にあたる高解像度部分から最下段の赤色にあたる低解像度までの特徴を並列に処理できる構造になっている. この構造によりHRNetは, bottleneck構造のCNNの構造上の問題である, 物体の細かな形状の情報を維持できない点を改善した. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.27]{./images/hrnet_fig.eps}
+    \caption{HRNet}
+    \label{fig:hrnet}
+\end{figure}
+
+
+\subsection{DHRNet (Deformable convolution High-Resolution Network)}\label{subsec:dhrnet}
+DHRNet\cite{dhrnet}は HRNet の低解像度部分にある畳み込み層を受容野が変形可能な deformable convolution に置き換えたものである. 
+前項までにsemantic segmentataionのCNNを用いた代表的な手法を紹介いてきたが, 根本となる畳み込み層を改善する試みはされていなかった. 畳み込みは\ref{subsec:cnn}項で述べたように, 入力画像に重みを持った固定サイズのフィルタカーネルをかけ特徴を抽出する処理である. そのため, 入力特徴マップのうちある出力特徴量に影響を及ぼす範囲である受容野は固定である. 
+しかし, semantic segmentationでは, 様々な形状や大きさの物体の特徴を抽出する必要があるため, 固定形状の受容野では特徴抽出に適切ではない. この問題を解決するために, DHRNetはdeformable convolutionという畳み込みをHRNetに適応した\cite{dhrnet}. deformable convolutionは, 追加の畳み込み層で学習したoffsetベクトルを用いることで, 受容野を可変形状にする畳み込み層である.  図\ref{fig:offset}に受容野を可変にしたフィルターカーネルの例を示す. 図\ref{fig:offset}の赤点が元の畳み込みの受容野, 赤線はoffsetベクトル, そして青点がoffsetにより移動した後の受容野を表している.受容野がoffsetベクトルによって可変になっていることがわかる.DHRNetは都市シーンのセグメンテーションのタスクなどで優秀な成績を収めている. 
+この手法に関する詳しい説明は\ref{chap:teian}章で述べる.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=2]{./images/offset.eps}
+    \caption{offsetによる受容野の変化例}
+    \label{fig:offset}
+\end{figure}
+
+\section{研究目的}\label{sec:mokuteki}
+\ref{subsec:dhrnet}節で紹介したDHRNetは, HRNetと比較して識別精度を向上させるさせることに成功した. しかし, なぜdeformable convolutionを導入したことで認識精度が向上したのかは明らかにされていない. そこで, deformable convolutionの挙動を明らかにするために, deformable convolutionにより変化したフィルタカーネルの位置を可視化し受容野の変化を視覚的に確認した.
+% 目的である ``物体の形状や大きさにより受容野を変更することで, 各物体に応じたより適切な特徴量抽出を実現する'' ことが達成できたかどうかの検討は行われていない. 
+% そこで, deformable convolution により変化したフィルタカーネルの位置を可視化することにより, 受容野の変化を視覚的に確認した. 
+DHRNetにはdeformable convolution層が2層含まれており, 図\ref{fig:defconv_2_offset}(a)は1層目, 図\ref{fig:defconv_2_offset}(b)は2層目の可視化結果である. 可視化にあたってofsetの変化を評価するために7つの画素を選んだ. 前提として, offsetの適切な変化量を定義することは困難であるため, 受容野が必ず異なる形状であるべきだと考えた評価点を選定している. 仮説としては, エッジ付近と物体の中心付近の受容野の形状には明確な違いが現れると考えたため, 評価の対象とする画素は, 道路と歩道とのエッジ付近や, 物体の中心付近とした. \\
+% 可視化に選んだある画素を中心とする従来の3x3サンプリング点と変更後のサンプリング点とを表示する. 
+\begin{figure}[h]
+    \begin{minipage}{0.5\hsize}
+     \begin{center}
+      \includegraphics[scale=0.10]{./images/offset_deform22.eps}
+      \subcaption{1層目のdeformable convolution の offset}
+       \label{fig:defconv2_1_offset}
+      \end{center}
+    \end{minipage}
+    \begin{minipage}{0.5\hsize}
+     \begin{center}
+      \includegraphics[scale=0.10]{./images/offset_deform24.eps}
+      \subcaption{2層目のdeformable convolution の offset}
+      \label{fig:defconv2_2_offset}
+      \end{center}
+    \end{minipage}
+    \caption{deforamble convolutionによる受容野の変化を可視化}
+\end{figure} \label{fig:defconv_2_offset}
+可視化結果である図\ref{fig:defconv_2_offset}(a)と 図\ref{fig:defconv_2_offset}(b)を見ると受容野の大きさが変化していたが, 評価画素ごとに受容野の形状を比較すると, 変化が乏しいことが確認できた. さらに, 図\ref{fig:defconv_2_offset}の各サンプリング点の左右方向のoffsetの大きさに注目すると, 明らかにoffsetベクトルが大きいものが存在する. \\
+畳み込みは重みを持ったフィルタカーネルと, それと同じサイズの入力特徴量とを掛け合わせる処理であるため, 出力特徴量が表現できるのは畳み込まれた局所的な特徴量の範囲内に制限される. つまり畳み込みは限られた範囲の中で特徴抽出を繰り返す処理である. ここで, deformable convolutionのoffsetは畳み込み層の出力特徴量であるため, 畳み込み層の入力特徴量が持つ情報の範囲内のみ表現可能である.
+そのため, deforamble convolutionの受容野の範囲は入力特徴量がもつ情報の範囲に制限されるべきである. しかし, 理由は後述するが, 現状のdeformable convolutionのアーキテクチャは受容野の範囲を制限する機構を持っていない. よって, 本研究ではDHRNetのdeformable convolutionにおける適切な需要野の範囲を検討し, 受容野の広がりを制限する機構を追加することで受容野を適切な範囲に収めることを研究目的とする.
