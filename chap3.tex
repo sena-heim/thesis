@@ -100,16 +100,39 @@ offset $\Delta p_n$を学習するために, 式(\ref{eq:def}), (\ref{eq:bilini}
   \label{fig:defconv_offset2}
 \end{figure}
 
-\section{提案手法}\label{sec:teian}
-deformable convolutionのoffsetによって決定する受容野が収まるべき範囲は, 畳み込み層を重ねたときの, ある入力画像の画素が影響を及ぼす範囲によって決定できると考えた. 例えばストライド1の$3\times3$畳み込みの場合は, 1つの画素が最大で$3\times3$の範囲の出力特徴量に影響を及ぼす. 図\ref{fig:conv_ptn}に, ストライド1, padding1の$3\times3$畳み込みにより入力特徴量の影響を及ぼす範囲が広がる例を示す. 図\ref{fig:conv_ptn}中にある入力データの灰色はpaddingであり, 白はpadding前の元の入力データである. そして, 入力データ内の赤色で示す特徴量を入力として, $3\times3$畳み込みにより得られた出力特徴量が出力特徴量マップの薄い赤色部分である. さらに, downsamplingの際にも各特徴量が影響を及ぼす範囲は広がる. この入力特徴量が影響を及ぼす範囲内に受容野が収まれば, offsetにより変化したサンプリング点に変化前のサンプリング点の特徴が必ず含まれるようになる. \\
+\section{受容野の範囲に制限を設ける活性化関数の提案}\label{sec:teian}
+deformable convolutionのoffsetによって決定する受容野が収まるべき範囲は, 畳み込み層を重ねたときの, ある入力画像の画素が影響を及ぼす範囲によって決定できると考えた. 例えばストライド1, padding1の$3\times3$畳み込みの場合は, 1つの画素が最大で$3\times3$の範囲の出力特徴量に影響を及ぼす. 図\ref{fig:conv_ptn}に, ストライド1, padding1の$3\times3$畳み込みにより入力特徴量の影響を及ぼす範囲が広がる例を示す. 図\ref{fig:conv_ptn}中にある入力データの灰色はpaddingであり, 白はpadding前の元の入力データである. そして, 入力データ内の赤色で示す特徴量を入力として, $3\times3$畳み込みにより得られた出力特徴量が出力特徴量マップの薄い赤色部分である. さらに, downsamplingの際にも各特徴量が影響を及ぼす範囲は広がる. この入力特徴量が影響を及ぼす範囲内に受容野が収まれば, offsetにより変化したサンプリング点に変化前のサンプリング点の特徴が必ず含まれるようになる. \\
 \begin{figure}[H]
   \centering
   \includegraphics[scale=1]{./images/conv_ptn.eps}
-  \caption{Deformable Convolutionの流れ\cite{defconv}}
+  \caption{ストライド1, padding1の$3\times3$畳み込み層により特徴量の影響を及ぼす範囲が広がる例}
   \label{fig:conv_ptn}
 \end{figure}
-しかし, 現状のdeformable convolutionのoffsetは図\ref{fig:conv_ptn}中の緑色の枠に示すconvolutionの出力であり, 値の範囲を制限をせずに受容野の変更に用いている. そのため, deformable convolutionは入力特徴量が影響を及ぼす範囲外まで受容野を拡大することが可能な構造をしている.  そこで, 受容野の範囲を特徴量の影響を及ぼす範囲に制限するために, DHRNetの低解像度部分における入力画像のある1点が影響を及ぼす範囲を調査した. DHRNetのBase
-そして, DHRNetの低解像度部分では, ある入力画素が影響を及ぼす範囲が低解像度部分の特徴マップにおいて上下左右に6画素であった. そこで本研究では,算出されたoffsetの範囲を制限するhard tanh6をoffsetに適応することを提案する. 提案するhard tanh6は, hard tanh\cite{raghu2017expressive}を拡張した活性化関数である.  hard tanh関数は図\ref{fig:hardtanh}に示すように, 入力値が-1より小さい場合と1より大きい場合は出力値が常に0であり, -1以上, 1以内の範囲では入力値をそのまま出力する活性化関数であるがdeformable convolution で制限したい値域とは異なる. 
+しかし, 現状のdeformable convolutionのoffsetは図\ref{fig:conv_ptn}中の緑色の枠に示す畳み込み層の出力であり, 値の範囲を制限をせずに受容野の変更に用いている. そのため, deformable convolutionは入力特徴量が影響を及ぼす範囲外まで受容野を拡大することが可能な構造をしている. そこで, 受容野の範囲を特徴量の影響を及ぼす範囲に制限するために, DHRNetの低解像度部分における特徴量が影響を及ぼす範囲を確認した. 
+
+\subsection{DHRNetにおける特徴量の広がり}\label{subsec:dhrnet_feature_map}
+図\ref{fig:fig:hrnet_zentai}より, DHRNetの入力画像はまずストライド2, padding1の$3\times3$畳み込み層を2層通る. このストライド2, padding1の$3\times3$畳み込み層では, 出力特徴マップのサイズが入力特徴マップの1/2になるのに加え, ある入力特徴量が影響を及ぼす範囲が出力特徴マップの$2\times2$の範囲まで広がる. 図\ref{fig:3x3_s2_p1}は, $8\times8$の入力特徴マップをストライド2, padding1の$3\times3$畳み込み層で特徴抽出したときに特徴量の影響を及ぼす範囲が広がる例である. 図\ref{fig:3x3_s2_p1}の入力画像の赤色で示す入力画素は, 出力特徴量マップの薄い赤色で示す$2\times2$の範囲の算出に用いられる. そして, 2層目の畳み込み層では特徴マップのサイズは1/2になるが, ある画素が影響を及ぼす範囲は$2\times2$のままである. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{./images/3x3_s2_p1.eps}
+  \caption{ストライド2, padding1の$3\times3$畳み込み層により特徴量の影響を及ぼす範囲が広がる例}
+  \label{fig:3x3_s2_p1}
+\end{figure}
+
+その後, bottleneckで$1\times1$, $3\times3$, $1\times1$の畳み込み層を通る. $1\times1$畳み込み層はチャンネル方向のみ畳み込むため, 特徴量の影響を及ぼす範囲は変化しない. botleneckの$3\times3$畳み込みはストライド1, padding1であるため, 図\ref{fig:3x3_s1_p1}の赤色で示す$2\times2$の範囲の特徴量が出力特徴マップの薄い赤色で示す$4\times4$の範囲まで広がる. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{./images/3x3_s1_p1.eps}
+  \caption{入力特徴マップの$2\times2$の特徴量が影響を及ぼす範囲が, ストライド1, padding1の$3\times3$畳み込み層により広がる例}
+  \label{fig:3x3_s1_p1}
+\end{figure}
+
+このようにDHRNetでのある入力画素の影響を及ぼす範囲を計算したところ, 低解像度部分の特徴マップでは$13\times13$の範囲まで広がっていた. ここで, deformable convolutionのoffsetを算出する畳込み層のカーネルサイズは$3\times3$であるため, offsetには$15\times15$の範囲の特徴量が影響を及ぼす. つまり, offsetの範囲は上下左右7画素の範囲に制限するべきである. 
+
+\subsection{Hard tanh7}\label{subsec:hard_tanh7}
+本研究では,算出されたoffsetの範囲を制限するhard tanh7をoffsetに適応することを提案する. 提案するhard tanh7は, hard tanh\cite{raghu2017expressive}を拡張した活性化関数である.  hard tanh関数は図\ref{fig:hardtanh}に示すように, 入力値が-1より小さい場合と1より大きい場合は出力値が常に0であり, -1以上, 1以内の範囲では入力値をそのまま出力する活性化関数であるがdeformable convolution で制限したい値域とは異なる. 
 
 % 入力特徴量が影響を及ぼす範囲外まで受容野が拡大すると, 入力特徴量とは関係のない位置の特徴量をdeformable convolutionの特徴抽出に用いることになるため, 学習が進まないと考えた.
 \begin{figure}[H]
@@ -119,23 +142,23 @@ deformable convolutionのoffsetによって決定する受容野が収まるべ�
   \label{fig:hardtanh}
 \end{figure}
 
-そのため, 提案するhard tanh6は図\ref{fig:hardtanh6}に示すように, hard tanhの値域を-6以上, 6以下に拡張した. 
+そのため, 提案するhard tanh7は図\ref{fig:hardtanh6}に示すように, hard tanhの値域を-7以上, 7以下に拡張した. 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.45]{./images/hardtanh6.eps}
-  \caption{hard tanh6関数}
+  \caption{hard tanh7関数}
   \label{fig:hardtanh6}
 \end{figure}
-ここで, harh tanh6の入力を$x$としたときの式を式(\ref{eq:hard_tanh6})に示す. 入力$x$が$x<-6, x>6$ならば出力値$hardtanh6(x) =0$であり, $-6<=x<=6$の範囲内ならば$hardtanh6(x)=x$である. 
+ここで, harh tanh7の入力を$x$としたときの式を式(\ref{eq:hard_tanh7})に示す. 入力$x$が$x<-7, x>7$ならば出力値$hardtanh7(x) =0$であり, $-7<=x<=7$の範囲内ならば$hardtanh7(x)=x$である. 
 \begin{equation}
-  hardtanh6(x) = 
+  hardtanh7(x) = 
       \begin{cases}
-        6  (x>6)\\ 
-        x  (-6<=x<=6)\\
-        -6  (x<-6) \label{eq:hard_tanh6}
+        7  (x>7)\\ 
+        x  (-7<=x<=7)\\
+        -7  (x<-7) \label{eq:hard_tanh6}
       \end{cases}
 \end{equation}
-この提案する活性化関数に offset を通すことで, offset を中心のサンプリング点が影響を及ぼす範囲内で学習させる. \\
+この提案する活性化関数に offset を通すことで, offset を特徴量が影響を及ぼす範囲内で学習させる. \\
 さらに, 現状のアーキテクチャでは畳み込みの中心のサンプリング位置も動いてしまっており, 入力特徴量の中でサンプリングされない特徴が出てきてしまう可能性がある.
 それに加え, 畳み込みの位置普遍性が失われてしまう問題もあるため, 入力特徴量において特徴抽出に用いられない点があることは問題であると考えた.
 そこで, 全ての入力特徴量を特徴抽出に使用するために, deformable convolutionの中心のoffsetを0に固定することを提案する.図\ref{fig:defconv_c0_offset}は, padding1の$5\times5$サイズの入力特徴量と, $3\times3$畳み込みカーネルの中心位置のみを示した図である. 図\ref{fig:defconv_c0_offset}の上段にはある緑色は$3\times3$畳み込みカーネルの中心位置を表しており, 青い矢印で畳み込みカーネルがスライドする位置を示す. そして, 図\ref{fig:defconv_c0_offset}の下段の緑部分は, $3\times3$畳み込みカーネルの中心のサンプリング点でたたみ込まれた入力特徴量の位置を示す. 下段を見ると全ての入力特徴量が特徴抽出に用いられていることがわかる.
