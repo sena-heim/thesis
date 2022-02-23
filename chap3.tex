@@ -100,7 +100,7 @@ offset $\Delta p_n$を学習するために, 式(\ref{eq:def}), (\ref{eq:bilini}
   \label{fig:defconv_offset2}
 \end{figure}
 
-\section{受容野の範囲に制限を設ける活性化関数の提案}\label{sec:teian}
+\section{受容野の範囲に制限を設ける活性化関数の提案}\label{sec:teian_ac_fn}
 deformable convolutionのoffsetによって決定する受容野が収まるべき範囲は, 畳み込み層を重ねたときの, ある入力画像の画素が影響を及ぼす範囲によって決定できると考えた. 例えばストライド1, padding1の$3\times3$畳み込みの場合は, 1つの画素が最大で$3\times3$の範囲の出力特徴量に影響を及ぼす. 図\ref{fig:conv_ptn}に, ストライド1, padding1の$3\times3$畳み込みにより入力特徴量の影響を及ぼす範囲が広がる例を示す. 図\ref{fig:conv_ptn}中にある入力データの灰色はpaddingであり, 白はpadding前の元の入力データである. そして, 入力データ内の赤色で示す特徴量を入力として, $3\times3$畳み込みにより得られた出力特徴量が出力特徴量マップの薄い赤色部分である. さらに, downsamplingの際にも各特徴量が影響を及ぼす範囲は広がる. この入力特徴量が影響を及ぼす範囲内に受容野が収まれば, offsetにより変化したサンプリング点に変化前のサンプリング点の特徴が必ず含まれるようになる. \\
 \begin{figure}[H]
   \centering
@@ -158,16 +158,25 @@ deformable convolutionのoffsetによって決定する受容野が収まるべ�
         -7  (x<-7) \label{eq:hard_tanh6}
       \end{cases}
 \end{equation}
-この提案する活性化関数に offset を通すことで, offset を特徴量が影響を及ぼす範囲内で学習させる. \\
-さらに, 現状のアーキテクチャでは畳み込みの中心のサンプリング位置も動いてしまっており, 入力特徴量の中でサンプリングされない特徴が出てきてしまう可能性がある.
-それに加え, 畳み込みの位置普遍性が失われてしまう問題もあるため, 入力特徴量において特徴抽出に用いられない点があることは問題であると考えた.
-そこで, 全ての入力特徴量を特徴抽出に使用するために, deformable convolutionの中心のoffsetを0に固定することを提案する.図\ref{fig:defconv_c0_offset}は, padding1の$5\times5$サイズの入力特徴量と, $3\times3$畳み込みカーネルの中心位置のみを示した図である. 図\ref{fig:defconv_c0_offset}の上段にはある緑色は$3\times3$畳み込みカーネルの中心位置を表しており, 青い矢印で畳み込みカーネルがスライドする位置を示す. そして, 図\ref{fig:defconv_c0_offset}の下段の緑部分は, $3\times3$畳み込みカーネルの中心のサンプリング点でたたみ込まれた入力特徴量の位置を示す. 下段を見ると全ての入力特徴量が特徴抽出に用いられていることがわかる.
-よって, deformable convolutionの受容野の範囲に制限を設けることと, offsetの中心を0に固定することにより, 学習が促進されると考えた.
+この提案する活性化関数にoffsetを通すことで, offsetを特徴量が影響を及ぼす範囲内で学習させる.
+
+\section{offsetの中心画素を固定する提案}\label{sec:teian_ac_fn}
+現状のアーキテクチャでは畳み込みの中心サンプリング点も移動しており, 入力特徴量の中でサンプリングされない特徴が出てきてしまう可能性がある. 図\ref{fig:deform_sampling_pg}はpadding1, $5\times5$サイズの入力特徴マップにおけるdeformable convolutionのサンプリング位置の例を示す. 図\ref{fig:deform_sampling_pg}の左に示す入力特徴量を, 中央の緑色で表す可変形状の畳み込みカーネルで畳み込む場合, 右に示すように特徴マップでサンプリングに用いない箇所が存在する. それに加え, 畳み込みの位置普遍性が失われてしまう問題もあるため, 入力特徴量において特徴抽出に用いられない点があることは問題であると考えた.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{./images/deform_sampling_pg.eps}
+  \caption{deformable convolutionにおけるサンプリング位置}
+  \label{fig:deform_sampling_pg}
+\end{figure}
+そこで, 本研究では全ての入力特徴量を特徴抽出に使用するために, deformable convolutionの中心画素のoffsetを0に固定することを提案する. 図\ref{fig:deform_sampling_pg_c0}の中央に, deformable convolutionの中心画素のoffsetを0に固定した可変形状の畳み込みカーネルを示す. 畳み込みカーネルの中心サンプリング位置は強調するために赤色で表す. 中心画素のoffsetを0に固定することで, 図\ref{fig:deform_sampling_pg_c0}の右に示すように畳み込みカーネルの中心サンプリング点で特徴マップのすべて特徴量をサンプリングすることができる.
+
+
+% padding1の$5\times5$サイズの入力特徴と, $3\times3$畳み込みカーネルの中心位置のみを示した図である. 図\ref{fig:defconv_c0_offset}の上段にはある緑色は$3\times3$畳み込みカーネルの中心位置を表しており, 青い矢印で畳み込みカーネルがスライドする位置を示す. そして, 図\ref{fig:defconv_c0_offset}の下段の緑部分は, $3\times3$畳み込みカーネルの中心のサンプリング点でたたみ込まれた入力特徴量の位置を示す. 下段を見ると全ての入力特徴量が特徴抽出に用いられていることがわかる.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=1.5]{./images/samplingten_c0.eps}
-  \caption{$3\times3$畳み込みカーネルの中心点による畳み込みの範囲}
+  \includegraphics[scale=1.5]{./images/deform_sampling_pg_c0.eps}
+  \caption{中心画素のoffsetを0に固定したdeformable convolutionにおけるサンプリング位置}
   \label{fig:defconv_c0_offset}
 \end{figure}
 

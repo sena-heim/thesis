@@ -1,18 +1,18 @@
 \appendix
 \begin{chapter}{基礎事項}
 \section{活性化関数}\label{hu:ac_fn}
-活性化関数とは，線形分離できない問題を解くために，ニューラルネットワークの各ユニットからの出力を正規化する非線形な関数である.代表的な関数として Sigmoid 関数や Tanh 関数などがあるが，Semantic Segmentationのネットワークの場合, 中間層では``ReLU''\cite{relu}, 出力層では分類問題で多く用いられる``Softmax''\cite{softmax}を使用するのが一般的である. 以下に本研究で使用する活性化関数について記述する.  
+活性化関数とは, 線形分離できない問題を解くために, ニューラルネットワークの各ユニットからの出力を正規化する非線形な関数である.代表的な関数として Sigmoid 関数や Tanh 関数などがあるが, Semantic Segmentationのネットワークの場合, 中間層では``ReLU''\cite{relu}, 出力層では分類問題で多く用いられる``Softmax''\cite{softmax}を使用するのが一般的である. 以下に本研究で使用する活性化関数について記述する.  
 \subsection*{Softmax 関数}
-Softmax 関数 [19] は主に多クラス分類問題での出力層に用いられる.出力層のニューロンの数が $n$ 個あるとして，$k$ 番目の入力 $x_k$ に対する出力 $y_k$ を求める計算式は，
+Softmax 関数\cite{softmax}は主に多クラス分類問題での出力層に用いられる.出力層のニューロンの数が $n$ 個あるとして, $k$ 番目の入力 $x_k$ に対する出力 $y_k$ を求める計算式は, 
 \begin{equation}
     \begin{split}
         y_k = \frac{\exp(a_i)}{\sum_j^n \exp(a_j)},\;(i=1,\ldots,n)
     \end{split}
 \end{equation}
-となる.Softmax 関数の出力は，0 から 1 の間の実数になる.また，Softmax 関数の出力 の総和は 1 になる.この性質から Softmax 関数の出力は多クラス問題における確率値とし て解釈できる.
+となる.Softmax 関数の出力は, 0 から 1 の間の実数になる.また, Softmax 関数の出力 の総和は 1 になる.この性質から Softmax 関数の出力は多クラス問題における確率値とし て解釈できる.
 \subsection*{ReLU(Rectified Linear Unit) 関数}
-ReLU 関数 [20] は図 3.3 のように，入力値が正ならば値をそのまま出力し，負ならば 0 を出力する関数である.
-入力を x としたときの式は，
+ReLU 関数\cite{relu}は入力値が正ならば値をそのまま出力し, 負ならば 0 を出力する関数である.
+入力を x としたときの式は, 
 \begin{equation}
 h(x) = 
     \begin{cases}
@@ -20,7 +20,7 @@ h(x) =
         0  (x<=0)
     \end{cases}
 \end{equation}
-となる.このように ReLU 関数はシンプルであることから，層の数が多くなっても安定した学習ができるため，深層学習の研究において最もよく用いられている活性化関数である.
+となる.このように ReLU 関数はシンプルであることから, 層の数が多くなっても安定した学習ができるため, 深層学習の研究において最もよく用いられている活性化関数である.
 
 \subsection*{tanh(Hyperbolic Tangent) 関数}
 tanh関数は式(\ref{eq:tanh})に示す関数であり, 出力は-1から1の範囲である.
@@ -58,8 +58,8 @@ hard tanh関数は式(\ref{eq:hard_tanh})に示す関数であり, tanhよりも
   \end{split}
 \end{equation}
  
-\section{$1\times1$Convolution(Pointwise Convolution)}\label{hu:1x1}
-$1\times1$Covnolution(Pointwise Convolution)は, $1\times1$カーネルで畳み込み演算を行う. 通常のConvolutionは入力特徴マップの空間方向(幅, 高さ)とチャンネル方向に同時に畳み込む. 対し, $1\times1$Convolutionでは, チャンネル方向のみに畳み込む. そのため$1\times1$Convolutionはチャンネル数の調整に用いられる.  
+\section{$1\times1$畳み込み(Pointwise Convolution)}\label{hu:1x1}
+$1\times1$畳み込み(Pointwise Convolution)は, $1\times1$カーネルで畳み込み演算を行う. 通常のConvolutionは入力特徴マップの空間方向(幅, 高さ)とチャンネル方向に同時に畳み込む. 対し, $1\times1$Convolutionでは, チャンネル方向のみに畳み込む. そのため$1\times1$Convolutionはチャンネル数の調整に用いられる.  
 
 
 \section{誤差逆伝播法(Back-propagation)}\label{hu:backprop}

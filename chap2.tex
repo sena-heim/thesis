@@ -4,7 +4,7 @@ Semantic segmentataionでは, 深層学習を用いた手法が多く提案さ�
 
 
 \section{Semantic segmentation}\label{chap:semantic}
-Semantic segmentationは入力画像に対してピクセル単位でクラス分類を行うことで, 画像中の様々な物体をそれぞれの外形で領域分割する技術である[3][4]. 図\ref{fig:seg_rei}中の上段は入力画像であり, 下段に示すクラスごとに入力画像を分離した結果が中段の画像である. そのため, semantic segmentation は画像中に存在する様々な物体が，それぞれどのクラスに属し，どのような形状で，どの位置に存在するのかを表現可能であり，シーン理解のタスクにおいて重要な手法である.近年では, 深層学習を用いた手法の提案により, 以前よりさらに高精度な推論が可能になった\cite{long2015fully}. 
+Semantic segmentationは入力画像に対してピクセル単位でクラス分類を行うことで, 画像中の様々な物体をそれぞれの外形で領域分割する技術である[3][4]. 図\ref{fig:seg_rei}中の上段は入力画像であり, 下段に示すクラスごとに入力画像を分離した結果が中段の画像である. そのため, semantic segmentation は画像中に存在する様々な物体が, それぞれどのクラスに属し, どのような形状で, どの位置に存在するのかを表現可能であり, シーン理解のタスクにおいて重要な手法である.近年では, 深層学習を用いた手法の提案により, 以前よりさらに高精度な推論が可能になった\cite{long2015fully}. 
 
 
 
@@ -19,7 +19,7 @@ Semantic segmentationは入力画像に対してピクセル単位でクラス�
 Semantic segmentationは深層学習を用いた手法が多く提案されてきた. それらの多くはCNNを元としている. 本節では, 多くの手法の元となっているCNNを説明した後に, CNNを用いた手法の代表例である Bottleneck 構造の CNNを紹介する.  その後に従来のBottleneck 構造の CNN より高精度なセグメンテーションを可能にした HRNet (High-Resolution Network)\cite{hrnet}を説明した上で,  CNNに変更を加えることでHRNetを改良した DHRNet (Deformable High-Resolution Network)\cite{dhrnet} を説明する.
 
 \subsection{CNN(Convolutional Neural Network)}\label{subsec:cnn}
-画像認識では主にCNN\cite{cnn}が用いられてきた. CNNは図\ref{fig:conv_ex}に示すような深層学習に用いられる多層ニューラルネットワークの1つである. 図\ref{fig:conv_ex}では入力画像を畳み込み層(convolution layer), プーリング層(pooling layer)で特徴量抽出した後, 一般的な全結合ネットワークがもつ全結合層(full connection layer)に通すことでクラス分類をおこなっている. ネットワークを多層にすることで，入力に近い層ではエッジなどの特徴を抽出し, 深い層になるにつれ, より抽象的な特徴を抽出できるように構成されている. semantic segmentationでは, ネットワークの出力がCNNの全結合層を畳み込み層に置き換えた, 畳み込み層, プーリング層 のみで構成される FCN(Fully Convolutional Network)\cite{long2015fully} をベースとしたアーキテクチャが多く提案されている. 
+画像認識では主にCNN\cite{cnn}が用いられてきた. CNNは図\ref{fig:conv_ex}に示すような深層学習に用いられる多層ニューラルネットワークの1つである. 図\ref{fig:conv_ex}では入力画像を畳み込み層(convolution layer), プーリング層(pooling layer)で特徴量抽出した後, 一般的な全結合ネットワークがもつ全結合層(full connection layer)に通すことでクラス分類をおこなっている. ネットワークを多層にすることで, 入力に近い層ではエッジなどの特徴を抽出し, 深い層になるにつれ, より抽象的な特徴を抽出できるように構成されている. semantic segmentationでは, ネットワークの出力がCNNの全結合層を畳み込み層に置き換えた, 畳み込み層, プーリング層 のみで構成される FCN(Fully Convolutional Network)\cite{long2015fully} をベースとしたアーキテクチャが多く提案されている. 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.35]{./images/example_cnn2.eps}
@@ -54,7 +54,7 @@ Semantic segmentationは深層学習を用いた手法が多く提案されて�
 
 ストライドはフィルタカーネルを移動させる間隔を決めるパラメータである. パディングが入力データと出力特徴マップのサイズを合わせるための処理であるのに対し, ストライドは1より大きい整数に変更することで出力特徴マップのサイズを縮小させることができる.  
 
-ストライドを１より大きい整数$s$に変更したConvolutionは式(\ref{eq:stconv})のように書ける.
+ストライドを1より大きい整数$s$に変更したConvolutionは式(\ref{eq:stconv})のように書ける.
 
 \begin{equation}
  O(x, y) = \sum_{m=-M}^M \sum_{n=-N}^N h(m,n)I(sx+m, sy+n) \label{eq:stconv}
@@ -135,6 +135,8 @@ DHRNetにはdeformable convolution層が2層含まれており, 図\ref{fig:defc
     \end{minipage}
     \caption{deforamble convolutionによる受容野の変化を可視化}
 \end{figure} \label{fig:defconv_2_offset}
-可視化結果である図\ref{fig:defconv_2_offset}(a)と 図\ref{fig:defconv_2_offset}(b)を見ると受容野の大きさが変化していたが, 評価画素ごとに受容野の形状を比較すると, 変化が乏しいことが確認できた. さらに, 図\ref{fig:defconv_2_offset}の各サンプリング点の左右方向のoffsetの大きさに注目すると, 明らかにoffsetベクトルが大きいものが存在する. \\
+可視化結果である図\ref{fig:defconv_2_offset}(a)と 図\ref{fig:defconv_2_offset}(b)を見ると受容野の大きさが変化していたが, 評価画素ごとに受容野の形状を比較すると, 変化が乏しいことが確認できた. さらに, 図\ref{fig:defconv_2_offset}の各サンプリング点の左右方向のoffsetの大きさに注目すると, 明らかにoffsetベクトルが大きいものが存在する. この可視化結果よりdeformable convolutionの問題点を2つ考察した.
+\subsection{受容野の範囲}\label{subsec:mondaiten_jyuyouya}
 畳み込みは重みを持ったフィルタカーネルと, それと同じサイズの入力特徴量とを掛け合わせる処理であるため, 出力特徴量が表現できるのは畳み込まれた局所的な特徴量の範囲内に制限される. つまり畳み込みは限られた範囲の中で特徴抽出を繰り返す処理である. ここで, deformable convolutionのoffsetは畳み込み層の出力特徴量であるため, 畳み込み層の入力特徴量が持つ情報の範囲内のみ表現可能である.
-そのため, deforamble convolutionの受容野の範囲は入力特徴量がもつ情報の範囲に制限されるべきである. しかし, 理由は後述するが, 現状のdeformable convolutionのアーキテクチャは受容野の範囲を制限する機構を持っていない. よって, 本研究ではDHRNetのdeformable convolutionにおける適切な需要野の範囲を検討し, 受容野の広がりを制限する機構を追加することで受容野を適切な範囲に収めることを研究目的とする.
+そのため, deforamble convolutionの受容野の範囲は入力特徴量がもつ情報の範囲に制限されるべきである. しかし, 理由は後述するが, 現状のdeformable convolutionのアーキテクチャは受容野の範囲を制限する機構を持っていない. よって, 本研究ではDHRNetのdeformable convolutionにおける適切な需要野の範囲を検討し, 受容野の広がりを制限する機構を追加することで受容野を適切な範囲に収めることを1つ目の研究目的とする.
+\subsection{中心画素のoffset}\label{subsec:mondaiten_center_offset}
