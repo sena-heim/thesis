@@ -55,19 +55,19 @@ True, Falseは正しく予測できたかを表し, Positive, Negativeは正と�
 
 \section{実験結果及び検討}
 % 提案手法の有用性を確認するために２つの実験を行う. なお, 
-本実験の目的の１つがdeformable convolutionのoffsetベクトルの挙動を評価することである. しかし, deformable convolutionが２つ含まれている既存のDHNetでは, offsetベクトルの挙動を複合的に考える必要があるため, 妥当な評価ができないと考えた. 
-よって実験では, DHRNetのDeformable Basic Blockを 図\ref{fig:defbasicblockv2}に示すようなdeformable convolution が１層のみに変更したDHRNet(deform-conv １層)をベースにして実験を行う. 
+本実験の目的の1つがdeformable convolutionのoffsetベクトルの挙動を評価することである. しかし, deformable convolutionが2つ含まれている既存のDHNetでは, offsetベクトルの挙動を複合的に考える必要があるため, 妥当な評価ができないと考えた.
+よって実験では, DHRNetのDeformable Basic Blockを 図\ref{fig:defbasicblockv2}に示すようなdeformable convolution を1層のみに変更したDHRNet(deform-conv 1層)をベースにして実験を行う.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=1]{./images/DeformBlock_deform-conv1.eps}
-    \caption{Deformable Basic Block(deform-conv １層)}
+    \caption{Deformable Basic Block(deform-conv 1層)}
     \label{fig:defbasicblockv2}
 \end{figure}
 
 \subsection{DHRNetの有効性の確認}
-本研究では, 提案する活性化関数をoffsetに適応することの妥当性を検討する. 
-そのために, まずDHRNet(deform-conv １層)の有効性を確認する. これを実験１とする. HRNetとDHRNet(deform-conv 2層), DHRNet(deform-conv 1層)のクラス全体の結果を表\ref{tab:tekiyouiti}に示す.
+本研究では, 提案する活性化関数をoffsetに適応することと, 中心画素のoffsetを0に固定することとの妥当性を検討する. 
+そのために, まずDHRNet(deform-conv 1層)の有効性を確認する. これを実験1とする. HRNetとDHRNet(deform-conv 2層), DHRNet(deform-conv 1層)のクラス全体の結果を表\ref{tab:tekiyouiti}に示す.
 
 \begin{table}[H]
     \centering
@@ -91,7 +91,7 @@ True, Falseは正しく予測できたかを表し, Positive, Negativeは正と�
     \label{fig:def1_4}
 \end{figure}
 
-可視化結果(図\ref{fig:def1_4})の評価画素ごとに受容野の形状を比較すると大きさによる変化は確認できるが, 形状の変化はあまり見られない. 次に\ref{fig:def1_4_x}と\ref{fig:def1_4_y}を見ると, -6以上６以下の範囲外に値が存在する. よって, DHRNet(deform-conv 1層)を実験に使用するのに適しているといえる.
+可視化結果(図\ref{fig:def1_4})の評価画素ごとに受容野の形状を比較すると大きさによる変化は確認できるが, 形状の変化はあまり見られない. 次に\ref{fig:def1_4_x}と\ref{fig:def1_4_y}を見ると, -6以上6以下の範囲外に値が存在する. よって, DHRNet(deform-conv 1層)を実験に使用するのに適しているといえる.
 % また, 図\ref{fig:def1_4}の各評価画素の中心サンプリング点が
 
 \begin{figure}[H]
@@ -112,10 +112,10 @@ True, Falseは正しく予測できたかを表し, Positive, Negativeは正と�
 
 
 \subsection{提案手法の有効性の確認}
-実験１でDHRNet(deform-conv 1層)が評価実験のベースとできることを確認した. よって提案する活性化関数の評価を行う, さらにカーネルの中心offsetを固定することでcnnの位置普遍性を担保することの有効性の検証も行う. 仮説としては, offsetの範囲に制限を設けることにより, 学習が促進され, 中心のoffsetを0に制限することでさらに学習が進むと考えた. この仮説より, 2つの条件で実験を行った.
+実験1でDHRNet(deform-conv 1層)が評価実験のベースとできることを確認した. よって提案する活性化関数の評価を行う, さらにカーネルの中心offsetを固定することでcnnの位置普遍性を担保することの有効性の検証も行う. 仮説としては, offsetの範囲に制限を設けることにより, 学習が促進され, 中心のoffsetを0に制限することでさらに学習が進むと考えた. この仮説より, 2つの条件で実験を行った.
 
 \begin{description}
-   \item[提案手法１] DHRNet(deform-conv 1層)のoffset算出部分にhard tanh6を導入
+   \item[提案手法1] DHRNet(deform-conv 1層)のoffset算出部分にhard tanh6を導入
    \item[提案手法2] DHRNet(deform-conv 1層)のoffset算出部分にhard tanh6を導入することに加え, 中心のoffsetベクトルを0に固定
 \end{description}
 
@@ -137,6 +137,7 @@ True, Falseは正しく予測できたかを表し, Positive, Negativeは正と�
 \begin{table}[H]
   \centering
   \caption{実験2の結果(クラスごと)}
+  \scalebox{0.8}{
   \begin{tabular}{c|c|c|c|c} \hline \hline
    クラス & \multicolumn{4}{|c}{IoU(\%)}\\ \hline 
    & HRNet & deform-conv 1層 & \begin{tabular}{l} deform-conv 1層 \\ + hard tanh6\end{tabular} & \begin{tabular}{l} deform-conv 1層 \\+ hard tanh6\\(中心のoffset 0)\end{tabular} \\ \hline 
@@ -160,10 +161,11 @@ True, Falseは正しく予測できたかを表し, Positive, Negativeは正と�
     motorcycle & 49.82 & 54.48 & $\mathbf{57.57}$ & 52.73 \\ \hline
     bicycle & 73.73 & 73.57 & 74.20 & $\mathbf{74.46}$ \\ \hline \hline
   \end{tabular}
+  }
   \label{tab:zikken2_iou}
 \end{table}
 
-表\ref{tab:ikken2_miou}より, DHRNet(deform-conv 1層)にhard tanh6を適応した提案手法１は, DHRNet(deform-conv 1層)から0.33pt向上している. そしてはDHRNet(deform-conv 1層)にhard tanh6を適応し, 中心のoffsetを0に固定した提案手法２は, DHRNet(deform-conv 1層)から0.24pt低下した. また\ref{tab:ikken2_miou}より, hard tanh6を適応した提案手法１は, DHRNet(deform-conv 1層)と比べて19クラス中13クラスで精度が高かった. よって, deformable convolutionのoffsetの範囲に制限を設けることで学習が促進することがわかった. 
+表\ref{tab:ikken2_miou}より, DHRNet(deform-conv 1層)にhard tanh6を適応した提案手法1は, DHRNet\\(deform-conv 1層)から0.33pt向上している. そしてはDHRNet(deform-conv 1層)にhard tanh6を適応し, 中心のoffsetを0に固定した提案手法2は, DHRNet(deform-conv 1層)から0.24pt低下した. また\ref{tab:ikken2_miou}より, hard tanh6を適応した提案手法1は, DHRNet(deform-conv 1層)と比べて19クラス中13クラスで精度が高かった. よって, deformable convolutionのoffsetの範囲に制限を設けることで学習が促進することがわかった. 
 次にoffsetに制限を加えたことでどのように受容野が変更されているかを確認するために, offsetの可視化結果を示す.
 
 \begin{figure}[H]

@@ -67,6 +67,10 @@
 \newlabel{fig:defconv2_2_offset}{{ 2.9b}{8}}
 \newlabel{sub@fig:defconv2_2_offset}{{b}{8}}
 \@writefile{lof} {\contentsline {figure}{\numberline { 2.9}{\ignorespaces deforamble convolutionによる受容野の変化を可視化\relax }}{8}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {2.3.1}受容野の範囲}{9}}
+\newlabel{subsec:mondaiten_jyuyouya}{{2.3.1}{9}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {2.3.2}中心画素のoffset}{9}}
+\newlabel{subsec:mondaiten_center_offset}{{2.3.2}{9}}
 \@writefile{toc} {\contentsline {chapter}{\numberline {第3章}提案手法}{10}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -106,65 +110,75 @@
 \@writefile{toc} {\contentsline {subsection}{\numberline {3.2.1}offset}{15}}
 \newlabel{eq:bilini}{{ 3.3}{15}}
 \newlabel{eq:bilini_back}{{ 3.4}{15}}
-\citation{defconv}
-\citation{defconv}
-\citation{raghu2017expressive}
 \@writefile{lof} {\contentsline {figure}{\numberline { 3.8}{\ignorespaces Deformable Convolutionの流れ\cite  {defconv}\relax }}{16}}
 \newlabel{fig:defconv_offset2}{{ 3.8}{16}}
-\@writefile{toc} {\contentsline {section}{\numberline {3.3}提案手法}{16}}
-\newlabel{sec:teian}{{3.3}{16}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 3.9}{\ignorespaces Deformable Convolutionの流れ\cite  {defconv}\relax }}{16}}
+\@writefile{toc} {\contentsline {section}{\numberline {3.3}受容野の範囲に制限を設ける活性化関数の提案}{16}}
+\newlabel{sec:teian_ac_fn}{{3.3}{16}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.9}{\ignorespaces ストライド1, padding1の$3\times 3$畳み込み層により特徴量の影響を及ぼす範囲が広がる例\relax }}{16}}
 \newlabel{fig:conv_ptn}{{ 3.9}{16}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 3.10}{\ignorespaces hard tanh関数\relax }}{17}}
-\newlabel{fig:hardtanh}{{ 3.10}{17}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 3.11}{\ignorespaces hard tanh6関数\relax }}{18}}
-\newlabel{fig:hardtanh6}{{ 3.11}{18}}
-\newlabel{eq:hard_tanh6}{{ 3.5}{18}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 3.12}{\ignorespaces $3\times 3$畳み込みカーネルの中心点による畳み込みの範囲\relax }}{19}}
-\newlabel{fig:defconv_c0_offset}{{ 3.12}{19}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {3.3.1}DHRNetにおける特徴量の広がり}{17}}
+\newlabel{subsec:dhrnet_feature_map}{{3.3.1}{17}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.10}{\ignorespaces ストライド2, padding1の$3\times 3$畳み込み層により特徴量の影響を及ぼす範囲が広がる例\relax }}{17}}
+\newlabel{fig:3x3_s2_p1}{{ 3.10}{17}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.11}{\ignorespaces 入力特徴マップの$2\times 2$の特徴量が影響を及ぼす範囲が, ストライド1, padding1の$3\times 3$畳み込み層により広がる例\relax }}{17}}
+\newlabel{fig:3x3_s1_p1}{{ 3.11}{17}}
+\citation{raghu2017expressive}
+\@writefile{toc} {\contentsline {subsection}{\numberline {3.3.2}Hard tanh7}{18}}
+\newlabel{subsec:hard_tanh7}{{3.3.2}{18}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.12}{\ignorespaces hard tanh関数\relax }}{18}}
+\newlabel{fig:hardtanh}{{ 3.12}{18}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.13}{\ignorespaces hard tanh7関数\relax }}{19}}
+\newlabel{fig:hardtanh6}{{ 3.13}{19}}
+\newlabel{eq:hard_tanh7}{{ 3.5}{19}}
+\@writefile{toc} {\contentsline {section}{\numberline {3.4}offsetの中心画素を固定する提案}{19}}
+\newlabel{sec:teian_c0}{{3.4}{19}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.14}{\ignorespaces deformable convolutionにおけるサンプリング位置\relax }}{20}}
+\newlabel{fig:deform_sampling_pg}{{ 3.14}{20}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 3.15}{\ignorespaces 中心画素のoffsetを0に固定したdeformable convolutionにおけるサンプリング位置\relax }}{20}}
+\newlabel{fig:defconv_c0_sampling_pg}{{ 3.15}{20}}
 \citation{cityscapes}
-\@writefile{toc} {\contentsline {chapter}{\numberline {第4章}実験}{20}}
+\@writefile{toc} {\contentsline {chapter}{\numberline {第4章}実験}{21}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec_experience}{{4}{20}}
-\@writefile{toc} {\contentsline {section}{\numberline {4.1}実験条件}{20}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.1}データセット}{20}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.2}評価指標}{20}}
-\@writefile{lot} {\contentsline {table}{\numberline { 4.1}{\ignorespaces Confusion Matrix\relax }}{20}}
-\newlabel{tab:hixyouka}{{ 4.1}{20}}
+\newlabel{sec_experience}{{4}{21}}
+\@writefile{toc} {\contentsline {section}{\numberline {4.1}実験条件}{21}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.1}データセット}{21}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.2}評価指標}{21}}
+\@writefile{lot} {\contentsline {table}{\numberline { 4.1}{\ignorespaces Confusion Matrix\relax }}{21}}
+\newlabel{tab:hixyouka}{{ 4.1}{21}}
 \citation{hrnet}
-\newlabel{eq:iou}{{ 4.1}{21}}
-\newlabel{eq:miou}{{ 4.2}{21}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.3}ハイパーパラメタ}{21}}
-\newlabel{sub:hypara}{{4.1.3}{21}}
-\@writefile{lot} {\contentsline {table}{\numberline { 4.2}{\ignorespaces 使用したハイパーパラメタ\relax }}{21}}
-\newlabel{tab:hypara}{{ 4.2}{21}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.4}実験環境}{21}}
-\@writefile{toc} {\contentsline {section}{\numberline {4.2}実験結果及び検討}{22}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.1}{\ignorespaces Deformable Basic Block(deform-conv １層)\relax }}{22}}
-\newlabel{fig:defbasicblockv2}{{ 4.1}{22}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.2.1}DHRNetの有効性の確認}{22}}
-\@writefile{lot} {\contentsline {table}{\numberline { 4.3}{\ignorespaces 実験1の結果(クラス全体)\relax }}{22}}
-\newlabel{tab:tekiyouiti}{{ 4.3}{22}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.2}{\ignorespaces DHRNetのoffsetの可視化\relax }}{23}}
-\newlabel{fig:def1_4}{{ 4.2}{23}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.3}{\ignorespaces offsetのx成分の分布\relax }}{23}}
-\newlabel{fig:def1_4_x}{{ 4.3}{23}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.4}{\ignorespaces offsetのy成分の分布\relax }}{24}}
-\newlabel{fig:def1_4_y}{{ 4.4}{24}}
-\@writefile{toc} {\contentsline {subsection}{\numberline {4.2.2}提案手法の有効性の確認}{24}}
-\@writefile{lot} {\contentsline {table}{\numberline { 4.4}{\ignorespaces 実験2の結果(クラス全体)\relax }}{24}}
-\newlabel{tab:ikken2_miou}{{ 4.4}{24}}
-\@writefile{lot} {\contentsline {table}{\numberline { 4.5}{\ignorespaces 実験2の結果(クラスごと)\relax }}{25}}
-\newlabel{tab:zikken2_iou}{{ 4.5}{25}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.5}{\ignorespaces deform-conv+hard tanh6のoffset\relax }}{26}}
-\newlabel{fig:deformtanh6}{{ 4.5}{26}}
-\@writefile{lof} {\contentsline {figure}{\numberline { 4.6}{\ignorespaces deform-conv+hard tanh6(中心のoffsetベクトルを0に固定)のoffset\relax }}{26}}
-\newlabel{fig:deformtanh6c0}{{ 4.6}{26}}
-\@writefile{toc} {\contentsline {chapter}{\numberline {第5章}結論}{27}}
+\newlabel{eq:iou}{{ 4.1}{22}}
+\newlabel{eq:miou}{{ 4.2}{22}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.3}ハイパーパラメタ}{22}}
+\newlabel{sub:hypara}{{4.1.3}{22}}
+\@writefile{lot} {\contentsline {table}{\numberline { 4.2}{\ignorespaces 使用したハイパーパラメタ\relax }}{22}}
+\newlabel{tab:hypara}{{ 4.2}{22}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.1.4}実験環境}{22}}
+\@writefile{toc} {\contentsline {section}{\numberline {4.2}実験結果及び検討}{23}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.1}{\ignorespaces Deformable Basic Block(deform-conv １層)\relax }}{23}}
+\newlabel{fig:defbasicblockv2}{{ 4.1}{23}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.2.1}DHRNetの有効性の確認}{23}}
+\@writefile{lot} {\contentsline {table}{\numberline { 4.3}{\ignorespaces 実験1の結果(クラス全体)\relax }}{23}}
+\newlabel{tab:tekiyouiti}{{ 4.3}{23}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.2}{\ignorespaces DHRNetのoffsetの可視化\relax }}{24}}
+\newlabel{fig:def1_4}{{ 4.2}{24}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.3}{\ignorespaces offsetのx成分の分布\relax }}{24}}
+\newlabel{fig:def1_4_x}{{ 4.3}{24}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.4}{\ignorespaces offsetのy成分の分布\relax }}{25}}
+\newlabel{fig:def1_4_y}{{ 4.4}{25}}
+\@writefile{toc} {\contentsline {subsection}{\numberline {4.2.2}提案手法の有効性の確認}{25}}
+\@writefile{lot} {\contentsline {table}{\numberline { 4.4}{\ignorespaces 実験2の結果(クラス全体)\relax }}{25}}
+\newlabel{tab:ikken2_miou}{{ 4.4}{25}}
+\@writefile{lot} {\contentsline {table}{\numberline { 4.5}{\ignorespaces 実験2の結果(クラスごと)\relax }}{26}}
+\newlabel{tab:zikken2_iou}{{ 4.5}{26}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.5}{\ignorespaces deform-conv+hard tanh6のoffset\relax }}{27}}
+\newlabel{fig:deformtanh6}{{ 4.5}{27}}
+\@writefile{lof} {\contentsline {figure}{\numberline { 4.6}{\ignorespaces deform-conv+hard tanh6(中心のoffsetベクトルを0に固定)のoffset\relax }}{27}}
+\newlabel{fig:deformtanh6c0}{{ 4.6}{27}}
+\@writefile{toc} {\contentsline {chapter}{\numberline {第5章}結論}{28}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec_conc}{{5}{27}}
+\newlabel{sec_conc}{{5}{28}}
 \citation{*}
 \bibdata{ref}
 \bibcite{rcnn}{1}
@@ -176,7 +190,7 @@
 \bibcite{long2015fully}{7}
 \bibcite{hrnet}{8}
 \bibcite{dhrnet}{9}
-\@writefile{toc} {\contentsline {chapter}{参考文献}{29}}
+\@writefile{toc} {\contentsline {chapter}{参考文献}{30}}
 \bibcite{segnet}{10}
 \bibcite{unet}{11}
 \bibcite{refinenet}{12}
@@ -191,23 +205,25 @@
 \bibcite{softmax}{21}
 \citation{relu}
 \citation{softmax}
-\@writefile{toc} {\contentsline {chapter}{\numberline {付 録A }基礎事項}{32}}
+\citation{softmax}
+\citation{relu}
+\@writefile{toc} {\contentsline {chapter}{\numberline {付 録A }基礎事項}{33}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc} {\contentsline {section}{\numberline {A.1}活性化関数}{32}}
-\newlabel{hu:ac_fn}{{A.1}{32}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.1}活性化関数}{33}}
+\newlabel{hu:ac_fn}{{A.1}{33}}
 \citation{batchnorm}
-\newlabel{eq:tanh}{{ A.3}{33}}
-\newlabel{eq:hard_tanh}{{ A.4}{33}}
-\@writefile{toc} {\contentsline {section}{\numberline {A.2}Batch Normalization}{33}}
-\newlabel{hu:bn}{{A.2}{33}}
-\@writefile{toc} {\contentsline {section}{\numberline {A.3}バイリニア補間}{33}}
-\newlabel{hu:bi}{{A.3}{33}}
-\newlabel{eq:bi}{{ A.5}{33}}
-\@writefile{toc} {\contentsline {section}{\numberline {A.4}$1\times 1$Convolution(Pointwise Convolution)}{34}}
-\newlabel{hu:1x1}{{A.4}{34}}
-\@writefile{toc} {\contentsline {section}{\numberline {A.5}誤差逆伝播法(Back-propagation)}{34}}
-\newlabel{hu:backprop}{{A.5}{34}}
-\@writefile{toc} {\contentsline {section}{\numberline {A.6}損失関数}{34}}
-\newlabel{hu:lossfunc}{{A.6}{34}}
-\gdef \@abspage@last{37}
+\newlabel{eq:tanh}{{ A.3}{34}}
+\newlabel{eq:hard_tanh}{{ A.4}{34}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.2}Batch Normalization}{34}}
+\newlabel{hu:bn}{{A.2}{34}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.3}バイリニア補間}{34}}
+\newlabel{hu:bi}{{A.3}{34}}
+\newlabel{eq:bi}{{ A.5}{34}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.4}$1\times 1$畳み込み(Pointwise Convolution)}{35}}
+\newlabel{hu:1x1}{{A.4}{35}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.5}誤差逆伝播法(Back-propagation)}{35}}
+\newlabel{hu:backprop}{{A.5}{35}}
+\@writefile{toc} {\contentsline {section}{\numberline {A.6}損失関数}{35}}
+\newlabel{hu:lossfunc}{{A.6}{35}}
+\gdef \@abspage@last{38}
